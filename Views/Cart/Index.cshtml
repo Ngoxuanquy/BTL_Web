@@ -1,0 +1,50 @@
+@model List<BTL_Web.Controllers.CartController.OrderProductDTO>
+
+
+<div>
+    @foreach (var Order in Model)
+    {
+        <div style="margin-top: 20px; padding: 10px; color: black; display: flex">
+            <h3>@Order.OrderId</h3>
+            <img src="~/Images/@Order.ProductImg" style="width: 200px; height: 200px" />
+            <div style="display: flex; justify-content: space-between;flex-direction: column;">
+                <p>Tên sản phẩm: @Order.ProductName</p>
+                <p>Đơn giá: @Order.ProductPrice</p>
+            </div>
+            <div>
+                <button data-id="@Order.OrderId" class="btn-delete">
+                    Xóa
+                </button>
+            </div>
+        </div>
+    }
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+
+
+    $(document).ready(function () {
+        $(".btn-delete").click(function () {
+            var hanghoaId = $(this).data("id");
+            console.log(hanghoaId)
+            if (confirm("Có chắc chắn muốn xoá không?")) {
+                $.ajax({
+                    url: '/Cart/DeleteCart',
+                    method: 'delete',
+                    data: { id: hanghoaId },
+                    success: function (result) {
+                        if (result.success) {
+    @* document.getElementById(hanghoaId).remove() *@
+                                alert("Xoas thanh cong")
+                        } else {
+                            alert("Không thể xóa hàng hoá.");
+                        }
+                    }
+                });
+            }
+        });
+    });
+
+
+</script>

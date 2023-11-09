@@ -1,8 +1,16 @@
+using BTL_Web.Models;
+using Microsoft.EntityFrameworkCore;
+using SignalRChat.Hubs;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddDbContext<BtlWebNcContext>(
+    options => options.UseSqlServer(builder.Configuration.GetConnectionString("constring"))
+);
 
+builder.Services.AddSignalR();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -19,6 +27,8 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthorization();
+
+app.MapHub<ChatHub>("/chatHub");
 
 app.MapControllerRoute(
     name: "default",

@@ -1,4 +1,8 @@
-﻿@{
+﻿@using BTL_Web.Models
+@model List<Product>
+
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
@@ -40,165 +44,149 @@
                 </div>
             </div>
         </div>
-        @* ------------- *@
-
-        <div>
-            <div>
-                <div style="font-size: 22px; margin-top: 20px;font-weight: 600 ">
-                    Browse homes in Duluth, MN
-                </div>
+        @foreach (var product in Model)
+        {
+            <div style="font-size: 22px; margin-top: 20px;font-weight: 600 ">
+                Browse homes in Duluth, MN
+            </div>
+            <a href="@Url.Action("ProductDetail", "Product", new { id = product.ProductId })"
+                style="color: black; text-decoration: none">
 
                 @* img *@
                 <div style="margin-top: 20px;">
                     <div style="display: flex;justify-content: space-between; ">
-                        <img src="https://ap.rdcpix.com/6c738d746a93f34014b902f77eebeea9l-m923869648od-w480_h360.webp"
-                            style="width: 310px; heigth: 310px; border-radius: 10px;filter: brightness(0.7);" />
-                        <img src="https://ap.rdcpix.com/793952f4e90433fec1dce1f004e6509bl-m4095727974od-w480_h360.webp"
-                            style="width: 310px; heigth: 310px; border-radius: 10px;filter: brightness(0.7);" />
+                        <div>
+                            <img src="~/Images/@product.ProductImg"
+                                style="width: 310px; heigth: 310px; border-radius: 10px;filter: brightness(0.7);" />
+                            <div style="display: flex;justify-content: space-between; ">
+                                <p>@product.ProductName</p>
+                                <p>@product.ProductPrice $</p>
+                            </div>
 
-                        <img src="https://ap.rdcpix.com/bf67c5791ceb2aa1ca04ad660ecda23dl-m1142746113od-w480_h360.webp"
-                            style="width: 310px; heigth: 310px; border-radius: 10px;filter: brightness(0.7);" />
-
-                        <img src="https://ap.rdcpix.com/a525954bc8482bf4779659ade6ae0a35l-b1470649103od-w480_h360.webp"
-                            style="width: 310px; heigth: 310px; border-radius: 10px;filter: brightness(0.7);" />
-
-                    </div>
-
-                    <div style="display: flex;justify-content: space-between;margin-top: 15px ">
-                        <img src="https://ap.rdcpix.com/79996973bbd53a970913055a3cc2d170l-m1010218906od-w480_h360.webp"
-                            style="width: 310px; heigth: 310px; border-radius: 10px;filter: brightness(0.7);" />
-                        <img src="https://ap.rdcpix.com/19ca6df5556299946e5522dd3bb306f2l-m2348154144od-w480_h360.webp"
-                            style="width: 310px; heigth: 310px; border-radius: 10px;filter: brightness(0.7);" />
-
-                        <img src="https://ap.rdcpix.com/4029de682d7021e25a009a496273852el-m2921407355od-w480_h360.webp"
-                            style="width: 310px; heigth: 310px; border-radius: 10px;filter: brightness(0.7);" />
-
-                        <img src="https://ap.rdcpix.com/95cab872bf8adf8cb990239effb132edl-m3370191076od-w480_h360.webp"
-                            style="width: 310px; heigth: 310px; border-radius: 10px;filter: brightness(0.7);" />
+                        </div>
                     </div>
                 </div>
-            </div>
+            </a>
+        } @* ------------- *@
 
-            @* -------------- *@
 
+        <div>
             <div>
-                <div>
-                    <div style="font-size: 25px;margin-top: 20px">
-                        Các mẫu hot
-                    </div>
-                    <div style="display: flex; justify-content: center; width: 100%; align-items: center;">
-                        <div>
-                            <img src="https://sccvietnam.vn/data/upload/image/post/album/bdsdothi4_5b0cbc4aed72f.jpg"
-                                style="width: 600px; height: 400px" />
-                        </div>
-                        <div
-                            style="text-align: center; display: flex; flex-direction: column; justify-content: center; width: 100%; align-items: center;">
-                            <div style="font-size: 30px;">
-                                Custom project
-                            </div>
-                            <div style="margin-top: 60px;width: 450px; font-weight: 500 ">
-                                Tell people more about what you do. Use this space to describe your products or
-                                services. Highlight their benefits so they feel compelled to click.
-                            </div>
-                            <div
-                                style="margin-top: 60px; background-color: #00baff; width: 150px;padding: 10px ;color: white ;text-align: center; heigth: 60px">
-                                Remodeling
-                            </div>
-                        </div>
-                    </div>
-
+                <div style="font-size: 25px;margin-top: 20px">
+                    Các mẫu hot
                 </div>
-            </div>
-
-            @* -------------- *@
-
-            <div style="margin-top: 30px;">
-                <div>
-
-                    <div style="display: flex; justify-content: center; width: 100%; align-items: center;">
-
-                        <div
-                            style="text-align: center; display: flex; flex-direction: column; justify-content: center; width: 100%; align-items: center;">
-                            <div style="font-size: 30px;">
-                                Our projects
-                            </div>
-                            <div style="margin-top: 60px; width: 450px; font-weight: 500 ">
-                                Tell people more about what you do. Use this space to describe your products or
-                                services. Highlight their benefits so they feel compelled to click.
-                            </div>
-                            <div
-                                style="margin-top: 60px; background-color: #00baff; width: 150px;padding: 10px ;color: white ;text-align: center; heigth: 60px">
-                                Click
-                            </div>
+                <div style="display: flex; justify-content: center; width: 100%; align-items: center;">
+                    <div>
+                        <img src="https://sccvietnam.vn/data/upload/image/post/album/bdsdothi4_5b0cbc4aed72f.jpg"
+                            style="width: 600px; height: 400px" />
+                    </div>
+                    <div
+                        style="text-align: center; display: flex; flex-direction: column; justify-content: center; width: 100%; align-items: center;">
+                        <div style="font-size: 30px;">
+                            Custom project
                         </div>
+                        <div style="margin-top: 60px;width: 450px; font-weight: 500 ">
+                            Tell people more about what you do. Use this space to describe your products or
+                            services. Highlight their benefits so they feel compelled to click.
+                        </div>
+                        <div
+                            style="margin-top: 60px; background-color: #00baff; width: 150px;padding: 10px ;color: white ;text-align: center; heigth: 60px">
+                            Remodeling
+                        </div>
+                    </div>
+                </div>
 
-                        <div>
-                            <img src="https://images.unsplash.com/photo-1556912173-3bb406ef7e77?ixid=MnwyMjUyNTN8MHwxfHNlYXJjaHw0OXx8a2l0Y2hlbiUyMGRpbmluZyUyMGZ1cm5pdHVyZXxlbnwwfHx8fDE2MjIxMDU4Nzk&ixlib=rb-1.2.1&w=1920&h=1280&crop=faces&fit=crop&fm=webp&q=75"
-                                style="width: 650px; height: 400px" />
+            </div>
+        </div>
+
+        @* -------------- *@
+
+        <div style="margin-top: 30px;">
+            <div>
+
+                <div style="display: flex; justify-content: center; width: 100%; align-items: center;">
+
+                    <div
+                        style="text-align: center; display: flex; flex-direction: column; justify-content: center; width: 100%; align-items: center;">
+                        <div style="font-size: 30px;">
+                            Our projects
+                        </div>
+                        <div style="margin-top: 60px; width: 450px; font-weight: 500 ">
+                            Tell people more about what you do. Use this space to describe your products or
+                            services. Highlight their benefits so they feel compelled to click.
+                        </div>
+                        <div
+                            style="margin-top: 60px; background-color: #00baff; width: 150px;padding: 10px ;color: white ;text-align: center; heigth: 60px">
+                            Click
                         </div>
                     </div>
 
+                    <div>
+                        <img src="https://images.unsplash.com/photo-1556912173-3bb406ef7e77?ixid=MnwyMjUyNTN8MHwxfHNlYXJjaHw0OXx8a2l0Y2hlbiUyMGRpbmluZyUyMGZ1cm5pdHVyZXxlbnwwfHx8fDE2MjIxMDU4Nzk&ixlib=rb-1.2.1&w=1920&h=1280&crop=faces&fit=crop&fm=webp&q=75"
+                            style="width: 650px; height: 400px" />
+                    </div>
                 </div>
+
             </div>
+        </div>
 
 
-            @* -------------- *@
+        @* -------------- *@
 
-            <div style="margin-top: 30px;">
-                <div>
-                    <div style="display: flex; justify-content: center; width: 100%; align-items: center;">
-                        <div>
-                            <img src="https://images.unsplash.com/photo-1542621334-a254cf47733d?ixid=MnwyMjUyNTN8MHwxfHNlYXJjaHwzNHx8am9iJTIwbGlzdGluZ3N8ZW58MHx8fHwxNjI1MTMyMjky&ixlib=rb-1.2.1&w=1920&h=1280&crop=faces&fit=crop&fm=webp&q=75"
-                                style="width: 600px; height: 400px" />
+        <div style="margin-top: 30px;">
+            <div>
+                <div style="display: flex; justify-content: center; width: 100%; align-items: center;">
+                    <div>
+                        <img src="https://images.unsplash.com/photo-1542621334-a254cf47733d?ixid=MnwyMjUyNTN8MHwxfHNlYXJjaHwzNHx8am9iJTIwbGlzdGluZ3N8ZW58MHx8fHwxNjI1MTMyMjky&ixlib=rb-1.2.1&w=1920&h=1280&crop=faces&fit=crop&fm=webp&q=75"
+                            style="width: 600px; height: 400px" />
+                    </div>
+                    <div
+                        style="text-align: center; display: flex; flex-direction: column; justify-content: center; width: 100%; align-items: center;">
+                        <div style="font-size: 30px;">
+                            Custom project
+                        </div>
+                        <div style="margin-top: 60px;width: 450px; font-weight: 500 ">
+                            Tell people more about what you do. Use this space to describe your products or
+                            services. Highlight their benefits so they feel compelled to click.
                         </div>
                         <div
-                            style="text-align: center; display: flex; flex-direction: column; justify-content: center; width: 100%; align-items: center;">
-                            <div style="font-size: 30px;">
-                                Custom project
-                            </div>
-                            <div style="margin-top: 60px;width: 450px; font-weight: 500 ">
-                                Tell people more about what you do. Use this space to describe your products or
-                                services. Highlight their benefits so they feel compelled to click.
-                            </div>
-                            <div
-                                style="margin-top: 60px; background-color: #00baff; width: 150px;padding: 10px ;color: white ;text-align: center; heigth: 60px">
-                                Remodeling
-                            </div>
+                            style="margin-top: 60px; background-color: #00baff; width: 150px;padding: 10px ;color: white ;text-align: center; heigth: 60px">
+                            Remodeling
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        @* ---------- *@
+    </div>
+    @* ---------- *@
 
-        <div style=" position: relative; width: 100%">
-            <div>
+    <div style=" position: relative; width: 100%">
+        <div>
+            <div
+                style="position: absolute; top: 40px; z-index: 10;width: 100%; display: flex; justify-content: center; align-items: center; ">
                 <div
-                    style="position: absolute; top: 40px; z-index: 10;width: 100%; display: flex; justify-content: center; align-items: center; ">
-                    <div
-                        style="color: white;  background-color: rgba(0, 0, 0, 0.52);width: 80%; height: 450px ; margin-top: 50px ">
-                        <div style="line-height: 60px; width: 80%; padding: 40px">
-                            <div>
-                                Reviews
-                            </div>
-                            <div>
-                                "Add testimonial quotes from actual people who use your products. Their feedback can
-                                build
-                                trust and help your visitors make up their mind."
-                                Mike Smith, companyname.com
-                            </div>
-                            <div>
-                                "Add testimonial quotes from actual people who use your products. Their feedback can
-                                build
-                                trust and help your visitors make up their mind."
-                                Mike Smith, companyname.com
-                            </div>
+                    style="color: white;  background-color: rgba(0, 0, 0, 0.52);width: 80%; height: 450px ; margin-top: 50px ">
+                    <div style="line-height: 60px; width: 80%; padding: 40px">
+                        <div>
+                            Reviews
+                        </div>
+                        <div>
+                            "Add testimonial quotes from actual people who use your products. Their feedback can
+                            build
+                            trust and help your visitors make up their mind."
+                            Mike Smith, companyname.com
+                        </div>
+                        <div>
+                            "Add testimonial quotes from actual people who use your products. Their feedback can
+                            build
+                            trust and help your visitors make up their mind."
+                            Mike Smith, companyname.com
                         </div>
                     </div>
                 </div>
-                <img style="width: 100%;height: 600px; margin-top:30px; position: relative;"
-                    src="https://images.unsplash.com/photo-1531824475211-72594993ce2a?ixid=MnwyMjUyNTN8MHwxfGFsbHx8fHx8fHx8fDE2MjYyMDczNjA&ixlib=rb-1.2.1&w=1920&h=1280&crop=faces&fit=crop&fm=webp&q=75" />
             </div>
+            <img style="width: 100%;height: 600px; margin-top:30px; position: relative;"
+                src="https://images.unsplash.com/photo-1531824475211-72594993ce2a?ixid=MnwyMjUyNTN8MHwxfGFsbHx8fHx8fHx8fDE2MjYyMDczNjA&ixlib=rb-1.2.1&w=1920&h=1280&crop=faces&fit=crop&fm=webp&q=75" />
         </div>
     </div>
 </div>

@@ -1,0 +1,35 @@
+@model Product
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["ErrorMessage"]
+    </div>
+}
+
+<h2 style="text-align: center;">Chi tiết sản phẩm</h2>
+<div>
+    <p>Đơn giá: @Model.ProductPrice</p>
+    <img src="~/Images/@Model.ProductImg" style="width: 350px" />
+    <h3>@Model.ProductName</h3>
+    <p>Mô tả: @Model.ProductDes</p>
+
+</div>
+
+<button onclick="handerGioHang(e)">
+    <a href="@Url.Action("CreateOrder", "Cart", new { id = @Model.ProductId })"
+        style="color: black; text-decoration: none">
+        Thêm vào giỏ hàng
+    </a>
+</button>
+
+<script>
+    const handerGioHang = (e) => {
+        var cookieValue = document.cookie;
+        if (!cookieValue) {
+            alert("Bạn vui lòng đăng nhập để mua hàng!!")
+            e.preventDefault();
+            e.stopPropagation();
+        }
+    }
+</script>

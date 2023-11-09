@@ -1,0 +1,25 @@
+@{
+    Layout = "_LayoutAdmin"; // Sử dụng layout mới
+
+}
+
+@model List<Product>
+
+<h2>Products</h2>
+<div>
+    @foreach (var product in Model)
+    {
+        <div style="margin-top: 20px; padding: 10px; color: black">
+            <a href="@Url.Action("ProductDetail", new { id = product.ProductId })"
+                style="color: black; text-decoration: none">
+                <img src="~/Images/@product.ProductImg" alt="@product.ProductName" style="width: 350px" />
+                <div style="display: flex; justify-content: space-between">
+                    <h3>@product.ProductName</h3>
+                    <p>Đơn giá: @product.ProductPrice</p>
+                </div>
+                <p>Mô tả: @product.ProductDes</p>
+                <button>Add to cart</button>
+            </a>
+        </div>
+    }
+</div>

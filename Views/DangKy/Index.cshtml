@@ -1,0 +1,98 @@
+@{
+    Layout = "_NoHeaderNoFooterLayout"; // Sử dụng layout mới
+}
+
+<style>
+    /* CSS cho trang đăng nhập */
+
+    body {
+        background-color: #f2f2f2;
+        font-family: Arial, sans-serif;
+        justify-content: center;
+        align-items: center;
+        margin-top: 150px;
+    }
+
+    .container {
+        max-width: 450px;
+        margin: 0 auto;
+        padding: 40px;
+        background-color: #fff;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        height: 350px;
+    }
+
+    h2 {
+        text-align: center;
+        color: #333;
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    label {
+        display: block;
+        font-weight: bold;
+    }
+
+    input[type="text"],
+    input[type="password"] {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+    }
+
+    button {
+        display: block;
+        width: 100%;
+        padding: 10px;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 3px;
+        cursor: pointer;
+        margin-top: 20px;
+        text-align: center;
+    }
+
+    button:hover {
+        background-color: #0056b3;
+    }
+</style>
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["ErrorMessage"]
+    </div>
+}
+<div>
+    <h2>Đăng ký</h2>
+
+    @using (Html.BeginForm("DangKy", "DangKy", FormMethod.Post))
+    {
+        <!-- Nội dung trang đăng nhập -->
+        <div class="form-group">
+            <label for="Username">Username:</label>
+            <input type="text" name="Username" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label for="Password">Password:</label>
+            <input type="password" name="Password" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label for="Password">Nhập lại mật khẩu:</label>
+            <input type="password" name="Password" class="form-control" />
+        </div>
+        <button type="submit" class="btn btn-primary">Login</button>
+    }
+
+    <div style="margin-top: 20px;">
+        Bạn chưa có tài khoản 
+        <a asp-controller="DangKy" asp-action="Index">
+            Đăng Ký
+        </a>
+    </div>
+</div>
