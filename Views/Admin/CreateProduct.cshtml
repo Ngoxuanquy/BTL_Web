@@ -1,6 +1,10 @@
 @model BTL_Web.Models.Product
 
 @{
+    Layout = "_LayoutAdmin"; // Sử dụng layout mới
+
+}
+@{
     ViewBag.Title = "Thêm Hàng Hóa";
 }
 
@@ -19,13 +23,13 @@
 }
 
 
-<h2>Thêm Hàng Hóa</h2>
+<h2 style=" margin-top: 100px;">Thêm Hàng Hóa</h2>
 
 @using (Html.BeginForm("CreateProduct", "Admin", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
 
-    <div class="form-group">
+    <div class="form-group" style="display: flex; ">
         @Html.LabelFor(model => model.ProductName, htmlAttributes: new { @class = "control-label" })
         @Html.EditorFor(model => model.ProductName, new { htmlAttributes = new { @class = "form-control" } })
         @Html.ValidationMessageFor(model => model.ProductName, "", new { @class = "text-danger" })

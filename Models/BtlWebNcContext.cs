@@ -19,6 +19,8 @@ public partial class BtlWebNcContext : DbContext
 
     public virtual DbSet<Product> Products { get; set; }
 
+    public virtual DbSet<Transition> Transitions { get; set; }
+
     public virtual DbSet<User> Users { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -38,6 +40,14 @@ public partial class BtlWebNcContext : DbContext
             entity.Property(e => e.Status)
                 .HasMaxLength(254)
                 .IsFixedLength();
+
+            entity.HasOne(d => d.Product).WithMany(p => p.Orders)
+                .HasForeignKey(d => d.ProductId)
+                .HasConstraintName("FK_Orders_Products");
+
+            entity.HasOne(d => d.User).WithMany(p => p.Orders)
+                .HasForeignKey(d => d.UserId)
+                .HasConstraintName("FK_Orders_Users");
         });
 
         modelBuilder.Entity<Product>(entity =>
@@ -51,6 +61,30 @@ public partial class BtlWebNcContext : DbContext
             entity.Property(e => e.ProductName)
                 .HasMaxLength(254)
                 .IsFixedLength();
+        });
+
+        modelBuilder.Entity<Transition>(entity =>
+        {
+            entity.ToTable("Transition");
+
+            entity.Property(e => e.TransitionId).HasColumnName("transitionId");
+            entity.Property(e => e.Diachi)
+                .HasMaxLength(200)
+                .IsFixedLength()
+                .HasColumnName("diachi");
+            entity.Property(e => e.Name)
+                .HasMaxLength(100)
+                .IsFixedLength()
+                .HasColumnName("name");
+            entity.Property(e => e.Sodienthoai)
+                .HasMaxLength(10)
+                .IsFixedLength()
+                .HasColumnName("sodienthoai");
+            entity.Property(e => e.UserId).HasColumnName("userId");
+
+            entity.HasOne(d => d.Order).WithMany(p => p.Transitions)
+                .HasForeignKey(d => d.OrderId)
+                .HasConstraintName("FK_Transition_Orders");
         });
 
         modelBuilder.Entity<User>(entity =>

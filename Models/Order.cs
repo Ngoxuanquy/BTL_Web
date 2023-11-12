@@ -16,4 +16,12 @@ public partial class Order
     public string? Adrees { get; set; }
 
     public string? Number { get; set; }
+
+    public int? SoLuong { get; set; }
+
+    public virtual Product? Product { get; set; }
+
+    public virtual ICollection<Transition> Transitions { get; set; } = new List<Transition>();
+
+    public virtual User? User { get; set; }
 }

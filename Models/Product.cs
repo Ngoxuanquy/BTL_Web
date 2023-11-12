@@ -14,4 +14,6 @@ public partial class Product
     public string? ProductDes { get; set; }
 
     public string? ProductImg { get; set; }
+
+    public virtual ICollection<Order> Orders { get; set; } = new List<Order>();
 }

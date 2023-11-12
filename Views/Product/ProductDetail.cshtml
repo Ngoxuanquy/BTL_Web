@@ -8,20 +8,26 @@
 }
 
 <h2 style="text-align: center;">Chi tiết sản phẩm</h2>
-<div>
-    <p>Đơn giá: @Model.ProductPrice</p>
-    <img src="~/Images/@Model.ProductImg" style="width: 350px" />
-    <h3>@Model.ProductName</h3>
-    <p>Mô tả: @Model.ProductDes</p>
+<div style="display: flex;flex-direction: row;">
+    <img src="~/Images/@Model.ProductImg" style="width: 400px; height: 400px" />
+    <div style="padding: 20px; width: 600px">
+        <h3>@Model.ProductName</h3>
+        <p>Đơn giá: @Model.ProductPrice</p>
+        <p>Mô tả: @Model.ProductDes</p>
+        <p>
+            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Eveniet aut ut laborum, labore modi incidunt hic
+            consectetur id, minima nemo possimus velit nisi culpa dolorum blanditiis quidem quae quod accusamus!
+        </p>
+        <button onclick="handerGioHang(e)">
+            <a href="@Url.Action("CreateOrder", "Cart", new { id = @Model.ProductId })"
+                style="color: black; text-decoration: none">
+                Thêm vào giỏ hàng
+            </a>
+        </button>
+    </div>
 
 </div>
 
-<button onclick="handerGioHang(e)">
-    <a href="@Url.Action("CreateOrder", "Cart", new { id = @Model.ProductId })"
-        style="color: black; text-decoration: none">
-        Thêm vào giỏ hàng
-    </a>
-</button>
 
 <script>
     const handerGioHang = (e) => {

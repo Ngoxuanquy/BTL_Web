@@ -25,17 +25,17 @@
                             <p> @Order.ProductName</p>
                         </td>
                         <td>
-                            <p>Đơn giá: @Order.ProductPrice</p>
+                            <p>@Order.ProductPrice</p>
 
                         </td>
                         <td>
-                            <button id="Tru" class="Tru" data-id="@Order.OrderId" onclick="decrementQuantity(this)">
-                                -
-                            </button>
-                            <input style="width: 60px" value="@Order.SoLuong" id="@Order.OrderId" />
-                            <button id="Cong" class="Cong" data-id="@Order.OrderId" onclick="incrementQuantity(this)">
-                                +
-                            </button>
+                            @* <button id="Tru" class="Tru" data-id="@Order.OrderId">
+                        -
+                        </button> *@
+                            <input style="width: 60px" value="@Order.SoLuong" />
+                            @* <button id="Cong" class="Cong" data-id="@Order.OrderId">
+                        +
+                        </button> *@
                         </td>
                         <td>
                             <button data-id="@Order.OrderId" class="btn-delete">
@@ -60,57 +60,52 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
 
-    function decrementQuantity(button) {
-        var id = button.getAttribute("data-id");
-        console.log(id)
+
+    //cộng sản phẩm
+    document.getElementById('Tru').addEventListener('click', () => {
+        var buttonElement = document.getElementById("Tru");
+        var dataIdValue = buttonElement.getAttribute("data-id");
+        console.log({ dataIdValue })
         fetch("/Cart/SoLuongTru", {
             method: "POST",
             headers: {
                 "Content-Type": "application/x-www-form-urlencoded",
             },
-            body: "id=" + id// Convert to JSON string
-        })
-            .then((data) => {
-                return data.json()
-            })
-            .then((data) => {
-                console.log({ dât: data })
-                var inputElement = document.getElementById(id);
-                if (inputElement) {
-                    inputElement.querySelector('input').value = data.product.soLuong;
-                } else {
-                    console.error("Input element not found!");
-                }
-
-            })
-            .catch(err => {
-                console.log(err)
-            })
-    }
-
-    function incrementQuantity(button) {
-        var orderId = button.getAttribute("data-id");
-        fetch("/Cart/SoLuongCong", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/x-www-form-urlencoded",
-            },
-            body: "id=" + orderId
+            body: "id=" + dataIdValue
         })
             .then((data) => {
                 return data.json()
             })
             .then((data) => {
                 console.log({ data })
-                document.getElementById(orderId).querySelector('input').value = data.newQuantity;
             })
             .catch(err => {
                 console.log(err)
             })
-        // TODO: Update the server-side data or perform any other necessary action
-    }
+    })
 
-
+    //cộng sản phẩm
+    document.getElementById('Cong').addEventListener('click', () => {
+        var buttonElement = document.getElementById("Cong");
+        var dataIdValue = buttonElement.getAttribute("data-id");
+        console.log({ dataIdValue })
+        fetch("/Cart/SoLuongCong", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+            },
+            body: "id=" + dataIdValue
+        })
+            .then((data) => {
+                return data.json()
+            })
+            .then((data) => {
+                console.log({ data })
+            })
+            .catch(err => {
+                console.log(err)
+            })
+    })
 
     //datdtj hangf
     document.getElementById('dathang').addEventListener('click', () => {
