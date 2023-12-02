@@ -67,13 +67,81 @@
         background-color: #0056b3;
     }
 </style>
+
+
+
 @if (TempData["ErrorMessage"] != null)
 {
-    <div class="alert alert-danger">
-        @TempData["ErrorMessage"]
-    </div>
+    <div class="alert alert-danger" id="error">@TempData["ErrorMessage"] </div>
 }
+
+<script>
+    function getCookie(name) {
+        var cookies = document.cookie.split('; ');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = cookies[i].split('=');
+            if (cookie[0] === name) {
+                return cookie[1];
+            }
+        }
+        return null;
+    }
+    @*
+        var myCookieValue = getCookie('LoginAttempts');
+        console.log(myCookieValue == "1");
+
+        if (myCookieValue == '1') {
+        document.getElementById('test').innerText = "Bạn đã nhập sai mật khẩu quá 3 lần. Vui lòng thử lại sau 1 phút"
+        console.log('hello')
+        const buttonElement = document.getElementById('button');
+
+        if (buttonElement) {
+        buttonElement.style.opacity = 0.3;
+        buttonElement.disabled = true;
+
+        }
+        }
+        else {
+        document.getElementById('test').innerText = ""
+
+        const buttonElement = document.getElementById('button');
+
+        if (buttonElement) {
+        buttonElement.style.opacity = 1;
+        buttonElement.disabled = false;
+
+        }
+        } *@
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const errorElement = document.getElementById("error");
+
+            if (errorElement) {
+                const error = errorElement.innerHTML.trim();
+                console.log(error);
+
+                if (error === "Bạn đã nhập sai mật khẩu quá 3 lần. Vui lòng thử lại sau 1 phút") {
+                    console.log("abc");
+
+                    // Assuming you have an element with the ID "button"
+                    const buttonElement = document.getElementById('button');
+
+                    if (buttonElement) {
+                        buttonElement.style.opacity = 0.3;
+                        buttonElement.disabled = true;
+
+                    }
+
+                }
+            }
+        });
+</script>
+
+
 <div>
+    <div id="test">
+
+    </div>
     <h2>Login</h2>
 
     @using (Html.BeginForm("Login", "Login", FormMethod.Post))
@@ -87,11 +155,11 @@
             <label for="Password">Password:</label>
             <input type="password" name="Password" class="form-control" />
         </div>
-        <button type="submit" class="btn btn-primary">Login</button>
+        <button type="submit" class="btn btn-primary" id="button">Login</button>
     }
 
     <div style="margin-top: 20px;">
-        Bạn chưa có tài khoản 
+        Bạn chưa có tài khoản
         <a asp-controller="DangKy" asp-action="Index">
             Đăng Ký
         </a>

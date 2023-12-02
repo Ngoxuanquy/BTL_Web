@@ -61,6 +61,11 @@ namespace BTL_Web.Controllers
                     Expires = DateTime.Now.AddDays(1) // Set the cookie to expire in 1 day
                 });
 
+                // int value = _DbContext.Orders
+                //         .Where(p => p.UserId == intValue && p.Status == "Đặt hàng")
+                //         .Count();
+
+                // Console.WriteLine("KeyValuePair" + value);
 
                 return View(ordersWithProducts);
             }
@@ -75,6 +80,10 @@ namespace BTL_Web.Controllers
         public IActionResult GetDonHang()
         {
             var userId = Request.Cookies["id"];
+            if (userId == "")
+            {
+
+            }
             if (int.TryParse(userId, out int intValue))
             {
                 var ordersWithProducts = this._DbContext.Orders
@@ -103,15 +112,16 @@ namespace BTL_Web.Controllers
             {
                 // Handle the case where conversion fails
                 // For example, you can return an error view or handle it as per your application's requirements
+                return RedirectToAction("", "Login");
                 return BadRequest("Invalid user ID.");
+
             }
         }
 
         [HttpPost]
         public JsonResult SoLuongTru(int id)
         {
-            Console.WriteLine("issnjc");
-            Console.WriteLine(id);
+
 
             var product = this._DbContext.Orders.Find(id);
 
@@ -124,7 +134,9 @@ namespace BTL_Web.Controllers
                 this._DbContext.SaveChanges();
             }
 
-            int totalProductQuantity = (int)_DbContext.Orders.Sum(o => o.SoLuong);
+            int totalProductQuantity = _DbContext.Orders
+                                  .Where(o => o.Status == "Đặt hàng") // Kiểm tra SoLuong có giá trị
+                                  .Sum(o => o.SoLuong ?? 0);
 
             Response.Cookies.Append("soluong", totalProductQuantity.ToString(), new CookieOptions
             {
@@ -150,7 +162,9 @@ namespace BTL_Web.Controllers
                 this._DbContext.SaveChanges();
             }
 
-            int totalProductQuantity = (int)_DbContext.Orders.Sum(o => o.SoLuong);
+            int totalProductQuantity = _DbContext.Orders
+                                  .Where(o => o.Status == "Đặt hàng") // Kiểm tra SoLuong có giá trị
+                                  .Sum(o => o.SoLuong ?? 0);
 
             Response.Cookies.Append("soluong", totalProductQuantity.ToString(), new CookieOptions
             {
@@ -158,7 +172,7 @@ namespace BTL_Web.Controllers
             });
 
             // Redirect to a different action or view if needed
-            return RedirectToAction("Index");
+            return Json(new { product });
         }
 
 
@@ -198,7 +212,9 @@ namespace BTL_Web.Controllers
                         _DbContext.Orders.Add(newOrder); // Add the new order to the Orders DbSet
                         _DbContext.SaveChanges(); // Save changes to the database context
 
-                        int totalProductQuantity = (int)_DbContext.Orders.Sum(o => o.SoLuong);
+                        int totalProductQuantity = _DbContext.Orders
+                                   .Where(o => o.Status == "Đặt hàng") // Kiểm tra SoLuong có giá trị
+                                   .Sum(o => o.SoLuong ?? 0);
 
                         Response.Cookies.Append("soluong", totalProductQuantity.ToString(), new CookieOptions
                         {
@@ -243,7 +259,9 @@ namespace BTL_Web.Controllers
                 }
 
                 // int itemCount = _DbContext.Orders.Count();
-                int totalProductQuantity = (int)_DbContext.Orders.Where(o => o.Status == "Đặt hàng").Sum(o => o.SoLuong);
+                int totalProductQuantity = _DbContext.Orders
+                                  .Where(o => o.Status == "Đặt hàng") // Kiểm tra SoLuong có giá trị
+                                  .Sum(o => o.SoLuong ?? 0);
 
                 Response.Cookies.Append("soluong", totalProductQuantity.ToString(), new CookieOptions
                 {
@@ -265,10 +283,6 @@ namespace BTL_Web.Controllers
         {
             try
             {
-                Console.WriteLine("orderIds111");
-                Console.WriteLine(orderIds);
-
-
                 // Kiểm tra nếu danh sách orderIds không rỗng
                 if (orderIds != null && orderIds.Length > 0)
                 {

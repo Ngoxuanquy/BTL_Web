@@ -1,61 +1,65 @@
 @model List<BTL_Web.Controllers.CartController.OrderProductDTO>
 
-
-<div style="margin-top: -50px; margin-bottom: 140px">
-    <table class="table">
-        <thead>
-            <tr>
-                <th scope="col">#</th>
-                <th scope="col">Sản phẩm</th>
-                <th scope="col">Đơn giá</th>
-                <th scope="col">Số lượng</th>
-                <th scope="col">Xóa</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var Order in Model)
-            {
-                <tr id="@Order.OrderId">
-                    <div style="margin-top: 20px; padding: 10px; color: black; display: flex">
-                        <td>
-                            <h3>@Order.OrderId</h3>
-                        </td>
-                        <td style="display: flex;">
-                            <img src="~/Images/@Order.ProductImg" style="width: 200px; height: 200px" />
-                            <p> @Order.ProductName</p>
-                        </td>
-                        <td>
-                            <p>Đơn giá: @Order.ProductPrice</p>
-
-                        </td>
-                        <td>
-                            <button id="Tru" class="Tru" data-id="@Order.OrderId" onclick="decrementQuantity(this)">
-                                -
-                            </button>
-                            <input style="width: 60px" value="@Order.SoLuong" id="@Order.OrderId" />
-                            <button id="Cong" class="Cong" data-id="@Order.OrderId" onclick="incrementQuantity(this)">
-                                +
-                            </button>
-                        </td>
-                        <td>
-                            <button data-id="@Order.OrderId" class="btn-delete">
-                                Xóa
-                            </button>
-                        </td>
-                    </div>
+<div style="margin-top: 50px; margin-bottom: 140px; display: flex; flex-direction: column; align-items: center;">
+    @if (Model.Count > 0)
+    {
+        <table class="table" style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Sản phẩm</th>
+                    <th scope="col">Đơn giá</th>
+                    <th scope="col">Số lượng</th>
+                    <th scope="col">Xóa</th>
                 </tr>
-            }
+            </thead>
+            <tbody>
+                @foreach (var Order in Model)
+                {
+                    <tr id="@Order.OrderId" style="border-bottom: 1px solid #ddd;">
+                        <td style="text-align: center; padding-top: 40px;">@Order.OrderId</td>
+                        <td>
+                            <div style="display: flex; align-items: center;">
+                                <img src="~/Images/@Order.ProductImg"
+                                    style="width: 100px; height: 100px; margin-right: 10px;" />
+                                <p>@Order.ProductName</p>
+                            </div>
+                        </td>
+                        <td style=" display: flex;margin-top: 30px; border: none">
+                            <div style="display: flex; align-items: center;">
+                                <p>
+                                    Đơn giá: @Order.ProductPrice
+                                </p>
+                            </div>
+                        </td>
+                        <td style="padding-top: 40px; ">
+                            <button id="Tru" class="Tru" data-id="@Order.OrderId" onclick="decrementQuantity(this)">-</button>
+                            <input style="width: 40px; text-align: center;" value="@Order.SoLuong" id="@Order.OrderId" />
+                            <button id="Cong" class="Cong" data-id="@Order.OrderId" onclick="incrementQuantity(this)">+</button>
+                        </td>
+                        <td style="padding-top: 40px;">
+                            <button data-id="@Order.OrderId" class="btn-delete">Xóa</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
 
-        </tbody>
-    </table>
-
-
-    <div style="position: absolute ; right: 10%;">
-        <button id="dathang">
-            Đặt hàng
-        </button>
-    </div>
+        <div style="margin-top: 20px;">
+            <button id="dathang"
+                style="padding: 10px 20px; font-size: 16px; background-color: #4CAF50; color: white; border: none; border-radius: 4px; cursor: pointer;">
+                Đặt hàng
+            </button>
+        </div>
+    }
+    else
+    {
+        <div style="font-size: 20px; color: red;">
+            Chưa có đơn hàng nào
+        </div>
+    }
 </div>
+
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
@@ -63,29 +67,39 @@
     function decrementQuantity(button) {
         var id = button.getAttribute("data-id");
         console.log(id)
-        fetch("/Cart/SoLuongTru", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/x-www-form-urlencoded",
-            },
-            body: "id=" + id// Convert to JSON string
-        })
-            .then((data) => {
-                return data.json()
-            })
-            .then((data) => {
-                console.log({ dât: data })
-                var inputElement = document.getElementById(id);
-                if (inputElement) {
-                    inputElement.querySelector('input').value = data.product.soLuong;
-                } else {
-                    console.error("Input element not found!");
-                }
+        var inputElement = document.getElementById(id);
+        var input_soluong = inputElement.querySelector('input').value
+        var soluongAsNumber = parseInt(input_soluong, 10);
 
+        if (soluongAsNumber > 1) {
+            fetch("/Cart/SoLuongTru", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                },
+                body: "id=" + id// Convert to JSON string
             })
-            .catch(err => {
-                console.log(err)
-            })
+                .then((data) => {
+                    return data.json()
+                })
+                .then((data) => {
+                    console.log({ data });
+
+                    var inputElement = document.getElementById(id);
+                    if (inputElement) {
+                        inputElement.querySelector('input').value = data.product.soLuong;
+                    } else {
+                        console.error("Input element not found!");
+                    }
+
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+        }
+        else {
+            alert('Sản phẩm phải lơn hơn 1')
+        }
     }
 
     function incrementQuantity(button) {
@@ -101,8 +115,13 @@
                 return data.json()
             })
             .then((data) => {
-                console.log({ data })
-                document.getElementById(orderId).querySelector('input').value = data.newQuantity;
+                console.log({ data });
+                var inputElement = document.getElementById(orderId);
+                if (inputElement) {
+                    inputElement.querySelector('input').value = data.product.soLuong;
+                } else {
+                    console.error("Input element not found!");
+                }
             })
             .catch(err => {
                 console.log(err)
@@ -136,6 +155,8 @@
                 return data.json();
             })
             .then((data) => {
+                alert('Đặt hàng thành công!!!')
+                window.location.reload();
                 console.log({ data });
             })
             .catch(err => {

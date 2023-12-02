@@ -1,6 +1,5 @@
 using BTL_Web.Models;
 using Microsoft.EntityFrameworkCore;
-using SignalRChat.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,7 +27,7 @@ app.UseRouting();
 
 app.UseAuthorization();
 
-app.MapHub<ChatHub>("/chatHub");
+// app.MapHub<ChatHub>("/chatHub");
 
 app.MapControllerRoute(
     name: "default",

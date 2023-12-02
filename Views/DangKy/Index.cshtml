@@ -2,6 +2,8 @@
     Layout = "_NoHeaderNoFooterLayout"; // Sử dụng layout mới
 }
 
+
+
 <style>
     /* CSS cho trang đăng nhập */
 
@@ -38,6 +40,7 @@
     }
 
     input[type="text"],
+    input[type="email"],
     input[type="password"] {
         width: 100%;
         padding: 10px;
@@ -61,38 +64,71 @@
     button:hover {
         background-color: #0056b3;
     }
+
+    /* Add a style for the alert */
+    .alert {
+        margin-top: 20px;
+    }
 </style>
+
 @if (TempData["ErrorMessage"] != null)
 {
     <div class="alert alert-danger">
         @TempData["ErrorMessage"]
     </div>
 }
-<div>
+
+<div class="container">
     <h2>Đăng ký</h2>
 
-    @using (Html.BeginForm("DangKy", "DangKy", FormMethod.Post))
+    @using (Html.BeginForm("DangKy", "DangKy", FormMethod.Post, new { onsubmit = "return validatePassword();" }))
     {
         <!-- Nội dung trang đăng nhập -->
         <div class="form-group">
-            <label for="Username">Username:</label>
-            <input type="text" name="Username" class="form-control" />
+            <label for="Email">Email:</label>
+            <input type="email" name="Email" id="Email" class="form-control">
         </div>
         <div class="form-group">
             <label for="Password">Password:</label>
-            <input type="password" name="Password" class="form-control" />
+            <input type="password" name="Password" id="Password" class="form-control" />
         </div>
         <div class="form-group">
-            <label for="Password">Nhập lại mật khẩu:</label>
-            <input type="password" name="Password" class="form-control" />
+            <label for="RePassword">Nhập lại mật khẩu:</label>
+            <input type="password" name="RePassword" id="RePassword" class="form-control" />
         </div>
-        <button type="submit" class="btn btn-primary">Login</button>
+        <button type="submit" class="btn btn-primary">Đăng ký</button>
     }
 
-    <div style="margin-top: 20px;">
-        Bạn chưa có tài khoản 
+    <div>
+        Bạn đã có tài khoản
         <a asp-controller="DangKy" asp-action="Index">
             Đăng Ký
         </a>
     </div>
 </div>
+
+<script>
+    function validatePassword() {
+        var email = document.getElementById("Email").value
+        var password = document.getElementById("Password").value
+        var rePassword = document.getElementById("RePassword").value
+
+        var emailInput = document.getElementById("Email")
+        if (!emailInput.checkValidity()) {
+            alert("Địa chỉ email không đúng định dạng")
+            return false // Prevent the form submission
+        }
+
+        if (password.length < 7) {
+            alert("Mật khẩu phải có ít nhất 7 ký tự")
+            return false // Prevent the form submission
+        }
+
+        if (password !== rePassword) {
+            alert("Mật khẩu và Nhập lại mật khẩu không trùng khớp")
+            return false // Prevent the form submission
+        }
+
+        return true // Allow the form submission
+    }
+</script>

@@ -21,45 +21,65 @@ public class DangKyController : Controller
     }
 
     [HttpPost]
-    public IActionResult DangKy(string username, string password)
+    public IActionResult DangKy(string email, string password)
     {
-        if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
+        if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
         {
-            TempData["ErrorMessage"] = "Vui lòng nhập tên người dùng và mật khẩu.";
+            ((List<string>)TempData["ErrorMessage"]).Add("Vui lòng nhập tên người dùng và mật khẩu.");
+            // TempData["ErrorMessage"] = email;
+            // TempData["ErrorMessage"] = password;
+
+
             return RedirectToAction("Index", "DangKy");
         }
 
-        // Check if the username is already registered
-        var existingUser = _DBbContext.Users.FirstOrDefault(x => x.Email == username);
+        // Check if the email is already registered
+        var existingUser = _DBbContext.Users.FirstOrDefault(x => x.Email == email);
         if (existingUser != null)
         {
             TempData["ErrorMessage"] = "Tài khoản đã được đăng ký.";
             return RedirectToAction("Index", "DangKy");
         }
 
-        // Create a new user
-        var newUser = new User
+        if (IsGmailAddress(email))
         {
-            Email = username,
-            Password = password
-        };
+            var newUser = new User
+            {
+                Email = email,
+                Password = password
+            };
 
-        try
-        {
-            _DBbContext.Set<User>().Add(newUser); // Use Set<User>() to explicitly set the entity type
-            _DBbContext.SaveChanges();
-            return RedirectToAction("", "Login");
+            try
+            {
+                _DBbContext.Set<User>().Add(newUser); // Use Set<User>() to explicitly set the entity type
+                _DBbContext.SaveChanges();
+                return RedirectToAction("", "Login");
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = "Lỗi khi lưu thông tin người dùng. Vui lòng thử lại sau." + ex;
+                // Log the exception for further investigation
+                // _logger.LogError(ex, "An error occurred while saving user data.");
+                Console.WriteLine(ex);
+                return RedirectToAction("Index", "DangKy");
+            }
         }
-        catch (Exception ex)
+        else
         {
-            TempData["ErrorMessage"] = "Lỗi khi lưu thông tin người dùng. Vui lòng thử lại sau." + ex;
-            // Log the exception for further investigation
-            // _logger.LogError(ex, "An error occurred while saving user data.");
-            Console.WriteLine(ex);
-            return RedirectToAction("Index", "DangKy");
+            TempData["ErrorMessage"] = "Vui lòng nhập email có đuôi @gmail.com";
+
         }
+        // Create a new user
+
+        return RedirectToAction("Index", "DangKy");
+
+
     }
 
+    bool IsGmailAddress(string email)
+    {
+        return email.EndsWith("@gmail.com", StringComparison.OrdinalIgnoreCase);
+    }
 
     public IActionResult Privacy()
     {
