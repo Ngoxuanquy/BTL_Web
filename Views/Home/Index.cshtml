@@ -66,7 +66,7 @@
                     <div style="margin-top: 20px;">
                         <div style="display: flex;justify-content: space-between;  ">
                             <div>
-                                <img src="~/Images/@product.ProductImg" alt="@product.ProductName"
+                                <img src="@product.ProductImg" alt="@product.ProductName"
                                     style="width:300px; height: 300px" />
                                 <div style="display: flex;justify-content: space-between; ">
                                     <p>@product.ProductName</p>
@@ -237,6 +237,11 @@
                         var resultItem = document.createElement("div");
                         resultItem.textContent = result.productName;  // Update this line based on your actual result structure
                         searchResultsContainer.appendChild(resultItem);
+
+                        var imgtext = document.createElement("img");
+                        imgtext.style.width = '200px'
+                        imgtext.src = result.productImg;  // Update this line based on your actual result structure
+                        searchResultsContainer.appendChild(imgtext);
                     });
                 })
                 .catch(err => {

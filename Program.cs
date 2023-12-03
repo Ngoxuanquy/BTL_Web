@@ -5,6 +5,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
 builder.Services.AddDbContext<BtlWebNcContext>(
     options => options.UseSqlServer(builder.Configuration.GetConnectionString("constring"))
 );
@@ -22,6 +23,8 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+
+app.UseDefaultFiles();
 
 app.UseRouting();
 

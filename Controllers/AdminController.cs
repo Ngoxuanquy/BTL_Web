@@ -91,6 +91,12 @@ namespace BTL_Web.Controllers
             return View(products);
         }
 
+        public IActionResult Customes()
+        {
+            var Users = this._DBbContext.Users.ToList();
+            return View(Users);
+        }
+
         public IActionResult Privacy()
         {
             return View();

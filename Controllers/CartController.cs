@@ -277,21 +277,28 @@ namespace BTL_Web.Controllers
             }
         }
 
+        public class OrderUpdateModel
+        {
+            public List<int> OrderIds { get; set; }
+            public string FullName { get; set; }
+            public string Address { get; set; }
+            public string PhoneNumber { get; set; }
+        }
 
         [HttpPost]
-        public JsonResult DatHang([FromBody] int[] orderIds)
+        public JsonResult DatHang([FromBody] OrderUpdateModel value)
         {
             try
             {
-                // Kiểm tra nếu danh sách orderIds không rỗng
-                if (orderIds != null && orderIds.Length > 0)
+                // Kiểm tra nếu danh sách value.orderIds không rỗng
+                if (value.OrderIds != null)
                 {
-                    // Lặp qua từng orderIds trong danh sách
-                    foreach (var orderId in orderIds)
+                    // Lặp qua từng value.orderIds trong danh sách
+                    foreach (var orderId in value.OrderIds)
                     {
                         Console.WriteLine("Processing orderId: " + orderId);
 
-                        // Tìm đơn đặt hàng có orderIds trùng với id
+                        // Tìm đơn đặt hàng có value.orderIds trùng với id
                         var order = this._DbContext.Orders.FirstOrDefault(row => row.OrderId == orderId);
 
                         Console.WriteLine("Found order: " + order);
@@ -301,6 +308,8 @@ namespace BTL_Web.Controllers
                         {
                             // Thực hiện cập nhật trạng thái đơn đặt hàng, ví dụ: đặt hàng thành công
                             order.Status = "Completed";
+                            order.Adrees = value.Address;
+                            order.Number = value.PhoneNumber;
                             // Cập nhật các thuộc tính khác nếu cần thiết
 
                             // Lưu thay đổi vào cơ sở dữ liệu
@@ -310,7 +319,7 @@ namespace BTL_Web.Controllers
                 }
 
                 // Trả về một JSON object để thể hiện rằng thao tác đã thành công
-                return Json(new { success = true, order = orderIds });
+                return Json(new { success = true, order = value.OrderIds });
             }
             catch (Exception ex)
             {

@@ -111,6 +111,11 @@
         color: red;
         text-align: center;
     }
+
+    .error {
+        color: red;
+
+    }
 </style>
 
 <div id="cart-container">
@@ -133,7 +138,7 @@
                         <td>@Order.OrderId</td>
                         <td>
                             <div class="product-info">
-                                <img src="~/Images/@Order.ProductImg" />
+                                <img src="@Order.ProductImg" />
                                 <p>@Order.ProductName</p>
                             </div>
                         </td>
@@ -161,15 +166,18 @@
         <div id="customer-info">
             <div>
                 <p>Họ và tên:</p>
-                <input type="text" />
+                <input type="text" id="fullName" />
+                <span id="fullNameError" class="error"></span>
             </div>
             <div>
                 <p>Số điện thoại:</p>
-                <input type="text" />
+                <input type="text" id="phoneNumber" />
+                <span id="phoneNumberError" class="error"></span>
             </div>
             <div>
                 <p>Địa chỉ:</p>
-                <input type="text" />
+                <input type="text" id="address" />
+                <span id="addressError" class="error"></span>
             </div>
         </div>
 
@@ -258,35 +266,66 @@
 
     //datdtj hangf
     document.getElementById('dathang').addEventListener('click', () => {
-        var orderIds = [];
+        var fullName = document.getElementById("fullName").value;
+        var phoneNumber = document.getElementById("phoneNumber").value;
+        var address = document.getElementById("address").value;
 
-        $(".btn-delete").each(function () {
-            orderIds.push($(this).data("id"));
-        });
+        if (fullName.trim() !== "" && phoneNumber.trim() !== "" && address.trim() !== "") {
 
-        console.log(orderIds)
 
-        // Now orderIds array contains all OrderIds
-        fetch("/Cart/DatHang", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
+            var orderIds = [];
 
-            },
-            body: JSON.stringify(orderIds)
 
-        })
-            .then((data) => {
-                return data.json();
-            })
-            .then((data) => {
-                alert('Đặt hàng thành công!!!')
-                window.location.reload();
-                console.log({ data });
-            })
-            .catch(err => {
-                console.log(err);
+            $(".btn-delete").each(function () {
+                orderIds.push($(this).data("id"));
             });
+
+            var value = {
+                fullName: fullName,
+                phoneNumber,
+                address,
+                orderIds
+            }
+
+            // Now orderIds array contains all OrderIds
+            fetch("/Cart/DatHang", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+
+                },
+                body: JSON.stringify(value)
+
+            })
+                .then((data) => {
+                    return data.json();
+                })
+                .then((data) => {
+                    alert('Đặt hàng thành công!!!')
+                    window.location.reload();
+                    console.log({ data });
+                })
+                .catch(err => {
+                    console.log(err);
+                });
+
+        }
+        else {
+            // Validate full name
+            if (fullName.trim() === "") {
+                document.getElementById("fullNameError").innerHTML = "Họ và tên không được để trống";
+            }
+
+            // Validate phone number
+            if (phoneNumber.trim() === "") {
+                document.getElementById("phoneNumberError").innerHTML = "Số điện thoại không được để trống";
+            }
+
+            // Validate address
+            if (address.trim() === "") {
+                document.getElementById("addressError").innerHTML = "Địa chỉ không được để trống";
+            }
+        }
     });
 
 

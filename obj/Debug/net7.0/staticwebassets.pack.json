@@ -5,6 +5,10 @@
       "PackagePath": "staticwebassets\\BTL_Web.bundle.scp.css"
     },
     {
+      "Id": "C:\\Users\\ngoxu\\Documents\\BTL_WebNangCao\\BTL_Web\\wwwroot\\Images\\2fe4f5db-8011-4a50-9aae-c3728d025195.jpg",
+      "PackagePath": "staticwebassets\\Images\\2fe4f5db-8011-4a50-9aae-c3728d025195.jpg"
+    },
+    {
       "Id": "C:\\Users\\ngoxu\\Documents\\BTL_WebNangCao\\BTL_Web\\wwwroot\\Images\\394016050_352174023895203_8773952410042069227_n.jpg",
       "PackagePath": "staticwebassets\\Images\\394016050_352174023895203_8773952410042069227_n.jpg"
     },
@@ -13,8 +17,20 @@
       "PackagePath": "staticwebassets\\Images\\396543005_266826456351952_2895998249348334220_n.jpg"
     },
     {
+      "Id": "C:\\Users\\ngoxu\\Documents\\BTL_WebNangCao\\BTL_Web\\wwwroot\\Images\\3c425c20-e64a-4c6a-81b2-3518f3ef2615.jpg",
+      "PackagePath": "staticwebassets\\Images\\3c425c20-e64a-4c6a-81b2-3518f3ef2615.jpg"
+    },
+    {
+      "Id": "C:\\Users\\ngoxu\\Documents\\BTL_WebNangCao\\BTL_Web\\wwwroot\\Images\\c1de53e6-0327-41b8-923a-e429973f0e60.jpg",
+      "PackagePath": "staticwebassets\\Images\\c1de53e6-0327-41b8-923a-e429973f0e60.jpg"
+    },
+    {
       "Id": "C:\\Users\\ngoxu\\Documents\\BTL_WebNangCao\\BTL_Web\\wwwroot\\Images\\hinh-anh-dep-6_044127357.jpg",
       "PackagePath": "staticwebassets\\Images\\hinh-anh-dep-6_044127357.jpg"
+    },
+    {
+      "Id": "C:\\Users\\ngoxu\\Documents\\BTL_WebNangCao\\BTL_Web\\wwwroot\\Images\\sanpham2.jpg",
+      "PackagePath": "staticwebassets\\Images\\sanpham2.jpg"
     },
     {
       "Id": "C:\\Users\\ngoxu\\Documents\\BTL_WebNangCao\\BTL_Web\\wwwroot\\css\\site.css",

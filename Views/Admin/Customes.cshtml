@@ -1,0 +1,63 @@
+@model List<User>
+
+@{
+    Layout = "_LayoutAdmin"; // Sử dụng layout mới
+}
+
+<style>
+    /* Thêm CSS để tùy chỉnh giao diện bảng */
+    table {
+        width: 100%;
+        margin-top: 50px;
+        border-collapse: collapse;
+        border-spacing: 0;
+        font-size: 16px;
+        text-align: left;
+    }
+
+    th,
+    td {
+        padding: 15px;
+        border-bottom: 1px solid #ddd;
+    }
+
+    th {
+        background-color: #f4f4f4;
+        color: #333;
+        font-weight: bold;
+        text-transform: uppercase;
+    }
+
+    tr:hover {
+        background-color: #b2b2b2;
+    }
+
+    td:last-child {
+        text-align: center;
+        cursor: pointer;
+        color: #e44d26;
+        font-weight: bold;
+    }
+</style>
+
+<table>
+    <thead>
+        <tr>
+            <th>Email</th>
+            <th>Mật khẩu</th>
+            <th>Phân quyền</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model)
+        {
+            <tr>
+                <td>@user.Email</td>
+                <td>@user.Password</td>
+                <td>@user.Roles</td>
+                <td onclick="deleteCart('@user.UserId')">Xóa</td>
+            </tr>
+        }
+    </tbody>
+</table>
