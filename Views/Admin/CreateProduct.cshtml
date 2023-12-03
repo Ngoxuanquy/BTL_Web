@@ -2,58 +2,113 @@
 
 @{
     Layout = "_LayoutAdmin"; // Sử dụng layout mới
-
 }
+
 @{
     ViewBag.Title = "Thêm Hàng Hóa";
 }
 
+<style>
+    /* Style for form container */
+    .form-container {
+        max-width: 400px;
+        margin: 0 auto;
+    }
+
+    /* Style for form labels */
+    .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: bold;
+    }
+
+    /* Style for form inputs */
+    .form-control {
+        width: 100%;
+        padding: 8px;
+        margin-bottom: 15px;
+        box-sizing: border-box;
+    }
+
+    /* Style for file input */
+    input[type="file"] {
+        margin-top: 5px;
+    }
+
+    /* Style for submit button */
+    .btn-primary {
+        background-color: #007bff;
+        color: #fff;
+        padding: 10px 20px;
+        border: none;
+        cursor: pointer;
+    }
+
+    /* Style for alerts */
+    .alert {
+        margin-top: 20px;
+        padding: 15px;
+        border-radius: 5px;
+    }
+
+    .alert-danger {
+        background-color: #dc3545;
+        color: #fff;
+    }
+</style>
+
+<h2 style="margin-top: 100px;">Thêm Hàng Hóa</h2>
+
 @if (TempData["ErrorMessage"] != null)
 {
     <div class="alert alert-danger">
-    @TempData["ErrorMessage"]
-</div>
+        @TempData["ErrorMessage"]
+    </div>
 }
 
 @if (TempData["SuccessMessage"] != null)
 {
     <div class="alert alert-danger">
-    @TempData["SuccessMessage"]
-</div>
+        @TempData["SuccessMessage"]
+    </div>
 }
 
+<div class="form-container">
+    @using (Html.BeginForm("CreateProduct", "Admin", FormMethod.Post, new
+    {
+        enctype = "multipart/form-data",
+        @class =
+    "form-group"
+    }))
+    {
+        @Html.AntiForgeryToken()
 
-<h2 style=" margin-top: 100px;">Thêm Hàng Hóa</h2>
+        <div class="form-group">
+            @Html.LabelFor(model => model.ProductName)
+            @Html.EditorFor(model => model.ProductName, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.ProductName, "", new { @class = "text-danger" })
+        </div>
 
-@using (Html.BeginForm("CreateProduct", "Admin", FormMethod.Post, new { enctype = "multipart/form-data" }))
-{
-    @Html.AntiForgeryToken()
+        <div class="form-group">
+            @Html.LabelFor(model => model.ProductPrice)
+            @Html.EditorFor(model => model.ProductPrice, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.ProductPrice, "", new { @class = "text-danger" })
+        </div>
 
-    <div class="form-group" style="display: flex; ">
-    @Html.LabelFor(model => model.ProductName, htmlAttributes: new { @class = "control-label" })
-    @Html.EditorFor(model => model.ProductName, new { htmlAttributes = new { @class = "form-control" } })
-    @Html.ValidationMessageFor(model => model.ProductName, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.ProductDes)
+            @Html.EditorFor(model => model.ProductDes, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.ProductDes, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ProductImg)
+            <input type="file" name="productImage" />
+            @Html.ValidationMessageFor(model => model.ProductImg, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="form-group">
+            <input type="submit" value="Lưu" class="btn btn-primary" />
+        </div>
+    }
 </div>
-
-    <div class="form-group">
-    @Html.LabelFor(model => model.ProductPrice, htmlAttributes: new { @class = "control-label" })
-    @Html.EditorFor(model => model.ProductPrice, new { htmlAttributes = new { @class = "form-control" } })
-    @Html.ValidationMessageFor(model => model.ProductPrice, "", new { @class = "text-danger" })
-</div>
-
-    <div class="form-group">
-    @Html.LabelFor(model => model.ProductDes, htmlAttributes: new { @class = "control-label" })
-    @Html.EditorFor(model => model.ProductDes, new { htmlAttributes = new { @class = "form-control" } })
-    @Html.ValidationMessageFor(model => model.ProductDes, "", new { @class = "text-danger" })
-</div>
-
-    <div class="form-group">
-    @Html.LabelFor(model => model.ProductImg, htmlAttributes: new { @class = "control-label" })
-    <input type="file" name="productImage" />
-    @Html.ValidationMessageFor(model => model.ProductImg, "", new { @class = "text-danger" })
-</div>
-
-    <div class="form-group">
-    <input type="submit" value="Lưu" class="btn btn-primary" />
-</div>
-}

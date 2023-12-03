@@ -1,9 +1,122 @@
 @model List<BTL_Web.Controllers.CartController.OrderProductDTO>
 
-<div style="margin-top: 50px; margin-bottom: 140px; display: flex; flex-direction: column; align-items: center;">
+<style>
+    body {
+        font-family: 'Arial', sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 0;
+    }
+
+    #cart-container {
+        margin: 50px auto;
+        max-width: 100%;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+    }
+
+    th,
+    td {
+        border-bottom: 1px solid #ddd;
+        padding: 15px;
+        text-align: left;
+    }
+
+    th {
+        background-color: #f2f2f2;
+    }
+
+    img {
+        width: 80px;
+        height: 80px;
+        border-radius: 4px;
+        margin-right: 10px;
+    }
+
+    .product-info {
+        display: flex;
+        align-items: center;
+    }
+
+    .price-info {
+        display: flex;
+        align-items: center;
+    }
+
+    .quantity-control {
+        display: flex;
+        align-items: center;
+    }
+
+    .btn-delete {
+        padding: 8px 16px;
+        font-size: 14px;
+        background-color: #dc3545;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .btn-delete:hover {
+        background-color: #c82333;
+    }
+
+    #customer-info {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        margin-bottom: 20px;
+    }
+
+    #customer-info div {
+        flex: 0 0 48%;
+        margin-bottom: 10px;
+    }
+
+    input {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+
+    #dathang {
+        padding: 10px 20px;
+        font-size: 16px;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    #dathang:hover {
+        background-color: #45a049;
+    }
+
+    #empty-cart {
+        font-size: 20px;
+        color: red;
+        text-align: center;
+    }
+</style>
+
+<div id="cart-container">
     @if (Model.Count > 0)
     {
-        <table class="table" style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
+        <table class="table">
             <thead>
                 <tr>
                     <th scope="col">#</th>
@@ -16,28 +129,28 @@
             <tbody>
                 @foreach (var Order in Model)
                 {
-                    <tr id="@Order.OrderId" style="border-bottom: 1px solid #ddd;">
-                        <td style="text-align: center; padding-top: 40px;">@Order.OrderId</td>
+                    <tr id="@Order.OrderId">
+                        <td>@Order.OrderId</td>
                         <td>
-                            <div style="display: flex; align-items: center;">
-                                <img src="~/Images/@Order.ProductImg"
-                                    style="width: 100px; height: 100px; margin-right: 10px;" />
+                            <div class="product-info">
+                                <img src="~/Images/@Order.ProductImg" />
                                 <p>@Order.ProductName</p>
                             </div>
                         </td>
-                        <td style=" display: flex;margin-top: 30px; border: none">
-                            <div style="display: flex; align-items: center;">
-                                <p>
-                                    Đơn giá: @Order.ProductPrice
-                                </p>
+                        <td>
+                            <div class="price-info">
+                                <p>Đơn giá: @Order.ProductPrice</p>
                             </div>
                         </td>
-                        <td style="padding-top: 40px; ">
-                            <button id="Tru" class="Tru" data-id="@Order.OrderId" onclick="decrementQuantity(this)">-</button>
-                            <input style="width: 40px; text-align: center;" value="@Order.SoLuong" id="@Order.OrderId" />
-                            <button id="Cong" class="Cong" data-id="@Order.OrderId" onclick="incrementQuantity(this)">+</button>
+                        <td>
+                            <div class="quantity-control">
+                                <button class="Tru" data-id="@Order.OrderId" onclick="decrementQuantity(this)">-</button>
+                                <input type="text" value="@Order.SoLuong" id="@Order.OrderId"
+                                    style="width: 50px; height: 30px" />
+                                <button class="Cong" data-id="@Order.OrderId" onclick="incrementQuantity(this)">+</button>
+                            </div>
                         </td>
-                        <td style="padding-top: 40px;">
+                        <td>
                             <button data-id="@Order.OrderId" class="btn-delete">Xóa</button>
                         </td>
                     </tr>
@@ -45,20 +158,32 @@
             </tbody>
         </table>
 
-        <div style="margin-top: 20px;">
-            <button id="dathang"
-                style="padding: 10px 20px; font-size: 16px; background-color: #4CAF50; color: white; border: none; border-radius: 4px; cursor: pointer;">
-                Đặt hàng
-            </button>
+        <div id="customer-info">
+            <div>
+                <p>Họ và tên:</p>
+                <input type="text" />
+            </div>
+            <div>
+                <p>Số điện thoại:</p>
+                <input type="text" />
+            </div>
+            <div>
+                <p>Địa chỉ:</p>
+                <input type="text" />
+            </div>
+        </div>
+
+        <div>
+            <button id="dathang">Đặt hàng</button>
         </div>
     }
     else
     {
-        <div style="font-size: 20px; color: red;">
-            Chưa có đơn hàng nào
-        </div>
+        <div id="empty-cart">Chưa có đơn hàng nào</div>
     }
 </div>
+
+
 
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

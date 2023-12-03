@@ -46,6 +46,15 @@
           }
         }
       },
+      "FuzzySearch.AspNetCore/2.2.2": {
+        "type": "package",
+        "compile": {
+          "lib/netcoreapp2.2/FuzzySearch.AspNetCore.dll": {}
+        },
+        "runtime": {
+          "lib/netcoreapp2.2/FuzzySearch.AspNetCore.dll": {}
+        }
+      },
       "Humanizer.Core/2.14.1": {
         "type": "package",
         "compile": {
@@ -738,6 +747,15 @@
           "lib/netstandard2.0/Mono.TextTemplating.dll": {}
         }
       },
+      "SimMetrics.Net/1.0.5": {
+        "type": "package",
+        "compile": {
+          "lib/netstandard2.0/SimMetrics.Net.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/SimMetrics.Net.dll": {}
+        }
+      },
       "System.Buffers/4.5.0": {
         "type": "package",
         "compile": {
@@ -1202,6 +1220,18 @@
         "azureicon.png",
         "lib/netstandard2.0/Azure.Identity.dll",
         "lib/netstandard2.0/Azure.Identity.xml"
+      ]
+    },
+    "FuzzySearch.AspNetCore/2.2.2": {
+      "sha512": "UqpzkyM2qFK2UwQUdRkvcdcoZ7QBkwC0QeAGZ+eZQodgKvPYdoOlnZ5yibf3X1MTLs8dGE/kx56xEQXOTEtWmA==",
+      "type": "package",
+      "path": "fuzzysearch.aspnetcore/2.2.2",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "fuzzysearch.aspnetcore.2.2.2.nupkg.sha512",
+        "fuzzysearch.aspnetcore.nuspec",
+        "lib/netcoreapp2.2/FuzzySearch.AspNetCore.dll"
       ]
     },
     "Humanizer.Core/2.14.1": {
@@ -2172,6 +2202,23 @@
         "mono.texttemplating.nuspec"
       ]
     },
+    "SimMetrics.Net/1.0.5": {
+      "sha512": "LaSDYOJDh2WncgRboqiWtk/Igqoim/LV7v808qBeWY/f36Ol5oEKguEYpKrWw5ap8KYP0SRXf7/v3zil9koY6Q==",
+      "type": "package",
+      "path": "simmetrics.net/1.0.5",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/net20/SimMetrics.Net.dll",
+        "lib/net35/SimMetrics.Net.dll",
+        "lib/net40/SimMetrics.Net.dll",
+        "lib/net45/SimMetrics.Net.dll",
+        "lib/netstandard1.0/SimMetrics.Net.dll",
+        "lib/netstandard2.0/SimMetrics.Net.dll",
+        "simmetrics.net.1.0.5.nupkg.sha512",
+        "simmetrics.net.nuspec"
+      ]
+    },
     "System.Buffers/4.5.0": {
       "sha512": "pL2ChpaRRWI/p4LXyy4RgeWlYF2sgfj/pnVMvBqwNFr5cXg7CXNnWZWxrOONLg8VGdFB8oB+EG2Qw4MLgTOe+A==",
       "type": "package",
@@ -3095,11 +3142,13 @@
   },
   "projectFileDependencyGroups": {
     "net7.0": [
+      "FuzzySearch.AspNetCore >= 2.2.2",
       "Microsoft.AspNetCore.Http >= 2.2.2",
       "Microsoft.Data.SqlClient >= 5.1.2",
       "Microsoft.EntityFrameworkCore.Design >= 7.0.11",
       "Microsoft.EntityFrameworkCore.SqlServer >= 7.0.11",
-      "Microsoft.EntityFrameworkCore.Tools >= 7.0.11"
+      "Microsoft.EntityFrameworkCore.Tools >= 7.0.11",
+      "SimMetrics.Net >= 1.0.5"
     ]
   },
   "packageFolders": {
@@ -3147,6 +3196,10 @@
       "net7.0": {
         "targetAlias": "net7.0",
         "dependencies": {
+          "FuzzySearch.AspNetCore": {
+            "target": "Package",
+            "version": "[2.2.2, )"
+          },
           "Microsoft.AspNetCore.Http": {
             "target": "Package",
             "version": "[2.2.2, )"
@@ -3168,6 +3221,10 @@
             "suppressParent": "All",
             "target": "Package",
             "version": "[7.0.11, )"
+          },
+          "SimMetrics.Net": {
+            "target": "Package",
+            "version": "[1.0.5, )"
           }
         },
         "imports": [

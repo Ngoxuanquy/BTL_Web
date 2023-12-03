@@ -1,6 +1,8 @@
 ﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using BTL_Web.Models;
+using FuzzySearch;
+using SimMetrics.Net.Metric;
 
 namespace BTL_Web.Controllers
 {
@@ -13,7 +15,7 @@ namespace BTL_Web.Controllers
             this._DbContext = _dbContext;
         }
 
-    // [HttpGet("GetAll")]
+        // [HttpGet("GetAll")]
         public IActionResult Index()
         {
             var users = this._DbContext.Products.ToList();
@@ -42,5 +44,16 @@ namespace BTL_Web.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+        [HttpPost]
+        public IActionResult Search(string searchString)
+        {
+            var products = this._DbContext.Products.ToList();
+
+            var prod = products.Where(s => s.ProductName!.Contains(searchString));
+
+            return Json(new { data = prod });
+        }
+
     }
 }

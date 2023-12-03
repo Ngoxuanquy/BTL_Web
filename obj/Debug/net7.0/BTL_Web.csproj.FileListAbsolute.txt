@@ -256,3 +256,5 @@ C:\Users\ngoxu\Documents\BTL_WebNangCao\BTL_Web\obj\Debug\net7.0\refint\BTL_Web.
 C:\Users\ngoxu\Documents\BTL_WebNangCao\BTL_Web\obj\Debug\net7.0\BTL_Web.pdb
 C:\Users\ngoxu\Documents\BTL_WebNangCao\BTL_Web\obj\Debug\net7.0\BTL_Web.genruntimeconfig.cache
 C:\Users\ngoxu\Documents\BTL_WebNangCao\BTL_Web\obj\Debug\net7.0\ref\BTL_Web.dll
+C:\Users\ngoxu\Documents\BTL_WebNangCao\BTL_Web\bin\Debug\net7.0\FuzzySearch.AspNetCore.dll
+C:\Users\ngoxu\Documents\BTL_WebNangCao\BTL_Web\bin\Debug\net7.0\SimMetrics.Net.dll
