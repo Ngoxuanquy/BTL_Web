@@ -142,9 +142,9 @@
     <tbody>
         @foreach (var product in Model)
         {
-            <tr id="detaiProduct"
-                onclick="handelDetai('@product.ProductId' , '@product.ProductName', '@product.ProductImg','@product.ProductPrice', '@product.ProductDes ')">
-                <td>
+            <tr id="detaiProduct">
+                <td
+                    onclick="handelDetai('@product.ProductId' , '@product.ProductName', '@product.ProductImg','@product.ProductPrice', '@product.ProductDes ')">
                     <img src="@product.ProductImg" alt="@product.ProductName"
                         data-details-id="details_@product.ProductId" />
                 </td>
@@ -155,8 +155,8 @@
                     Xóa
                 </td>
             </tr>
-
         }
+
     </tbody>
 </table>
 
@@ -178,17 +178,17 @@
                 body: formData,
                 headers: {
     @* 'Content-Type': 'multipart/form-data', // Note: Don't set Content-Type, it will be automatically set by FormData *@
-                },
+                    },
     });
 
     const data = await res.json();
     return data.secure_url;
-        } catch (error) {
+            } catch (error) {
         console.error('Error uploading image:', error);
         // Handle error as needed
         throw error;
     }
-    };
+        };
 
     const handelDetai = (ProductId, ProductName, ProductImg, ProductPrice, ProductDes) => {
 
@@ -330,15 +330,18 @@
         var intNumber = parseInt(id, 10);
 
         console.log(intNumber)
-        fetch("/product/DeleteCart", {
+        fetch("/Product/DeleteCart", {
             method: "Post",
             headers: {
-                "Content-Type": "application/x-www-form-urlencoded",
+                "Content-Type": "application/json",
             },
-            body: "id=" + intNumber
+            body: JSON.stringify({
+                ProductId: intNumber
+            })
         })
             .then((data) => {
                 console.log('abcjs')
+                console.log(intNumber)
                 return data.json()
             })
             .then((data) => {

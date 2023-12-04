@@ -52,9 +52,9 @@ namespace BTL_Web.Controllers
                         })
                     .ToList();
 
-                int totalProductQuantity = _DbContext.Orders
-                                  .Where(o => o.Status == "Đặt hàng") // Kiểm tra SoLuong có giá trị
-                                  .Sum(o => o.SoLuong ?? 0);
+                int totalProductQuantity = this._DbContext.Orders
+                    .Where(o => o.Status == "Đặt hàng" && o.UserId == intValue && o.SoLuong.HasValue)
+                    .Sum(o => o.SoLuong.Value);
 
                 Response.Cookies.Append("soluong", totalProductQuantity.ToString(), new CookieOptions
                 {
@@ -113,15 +113,58 @@ namespace BTL_Web.Controllers
                 // Handle the case where conversion fails
                 // For example, you can return an error view or handle it as per your application's requirements
                 return RedirectToAction("", "Login");
+
+            }
+        }
+
+
+        public IActionResult DonHangDaDong()
+        {
+            var userId = Request.Cookies["id"];
+            if (userId == "")
+            {
+
+            }
+            if (int.TryParse(userId, out int intValue))
+            {
+                var ordersWithProducts = this._DbContext.Orders
+                    .Where(p => p.UserId == intValue && p.Status == "Đã đóng hàng")
+                    .Join(
+                        this._DbContext.Products,
+                        order => order.ProductId,
+                        product => product.ProductId,
+                        (order, product) => new OrderProductDTO
+                        {
+                            OrderId = order.OrderId,
+                            ProductName = product.ProductName,
+                            ProductDes = product.ProductDes,
+                            ProductImg = product.ProductImg,
+                            SoLuong = (int)order.SoLuong,
+                            ProductPrice = (int)product.ProductPrice,
+                            // Other properties you may need
+                        })
+                    .ToList();
+
+
+
+                return View(ordersWithProducts);
+            }
+            else
+            {
+                // Handle the case where conversion fails
+                // For example, you can return an error view or handle it as per your application's requirements
+                return RedirectToAction("", "Login");
                 return BadRequest("Invalid user ID.");
 
             }
         }
 
+
         [HttpPost]
         public JsonResult SoLuongTru(int id)
         {
 
+            var userId = Request.Cookies["id"];
 
             var product = this._DbContext.Orders.Find(id);
 
@@ -134,23 +177,34 @@ namespace BTL_Web.Controllers
                 this._DbContext.SaveChanges();
             }
 
-            int totalProductQuantity = _DbContext.Orders
-                                  .Where(o => o.Status == "Đặt hàng") // Kiểm tra SoLuong có giá trị
-                                  .Sum(o => o.SoLuong ?? 0);
-
-            Response.Cookies.Append("soluong", totalProductQuantity.ToString(), new CookieOptions
+            if (int.TryParse(userId, out int intValue))
             {
-                Expires = DateTime.Now.AddDays(1) // Set the cookie to expire in 1 day
-            });
 
+                int totalProductQuantity = this._DbContext.Orders
+                    .Where(o => o.Status == "Đặt hàng" && o.UserId == intValue && o.SoLuong.HasValue)
+                    .Sum(o => o.SoLuong.Value);
+
+                Response.Cookies.Append("soluong", totalProductQuantity.ToString(), new CookieOptions
+                {
+                    Expires = DateTime.Now.AddDays(1) // Set the cookie to expire in 1 day
+                });
+
+            }
             // Redirect to a different action or view if needed
-            return Json(new { product });
+            return Json(new
+            {
+                product
+            });
 
         }
 
         [HttpPost]
         public IActionResult SoLuongCong(int id)
         {
+            var userId = Request.Cookies["id"];
+
+            Console.WriteLine(userId + "userId userId userId");
+
             var product = this._DbContext.Orders.Find(id);
 
             if (product != null)
@@ -162,14 +216,19 @@ namespace BTL_Web.Controllers
                 this._DbContext.SaveChanges();
             }
 
-            int totalProductQuantity = _DbContext.Orders
-                                  .Where(o => o.Status == "Đặt hàng") // Kiểm tra SoLuong có giá trị
-                                  .Sum(o => o.SoLuong ?? 0);
-
-            Response.Cookies.Append("soluong", totalProductQuantity.ToString(), new CookieOptions
+            if (int.TryParse(userId, out int intValue))
             {
-                Expires = DateTime.Now.AddDays(1) // Set the cookie to expire in 1 day
-            });
+
+                int totalProductQuantity = this._DbContext.Orders
+                    .Where(o => o.Status == "Đặt hàng" && o.UserId == intValue && o.SoLuong.HasValue)
+                    .Sum(o => o.SoLuong.Value);
+
+                Response.Cookies.Append("soluong", totalProductQuantity.ToString(), new CookieOptions
+                {
+                    Expires = DateTime.Now.AddDays(1) // Set the cookie to expire in 1 day
+                });
+
+            }
 
             // Redirect to a different action or view if needed
             return Json(new { product });
@@ -184,25 +243,34 @@ namespace BTL_Web.Controllers
         }
         public ActionResult CreateOrder(int id)
         {
-            // Create a new order
-            var userId = Request.Cookies["id"];
-            if (userId == "" || userId == null)
+            var userIdCookie = Request.Cookies["id"];
+
+            if (string.IsNullOrEmpty(userIdCookie))
             {
                 TempData["ErrorMessage"] = "Bạn vui lòng đăng nhập để mua hàng!!!";
                 return RedirectToAction("", "Login");
-
             }
-            else
+
+            if (int.TryParse(userIdCookie, out int userId))
             {
-                if (int.TryParse(userId, out int intValue))
+                try
                 {
-                    try
+                    // Check if the user already has the product in the order
+                    var existingOrder = _DbContext.Orders
+                        .SingleOrDefault(o => o.ProductId == id && o.UserId == userId && o.Status == "Đặt hàng");
+
+                    if (existingOrder != null)
                     {
+                        // If the product already exists, increase the quantity
+                        existingOrder.SoLuong += 1;
+                    }
+                    else
+                    {
+                        // If the product does not exist, create a new order
                         var newOrder = new Order
                         {
                             ProductId = id,
-                            // Set other properties as needed
-                            UserId = intValue, // Set the UserId to the parsed user ID
+                            UserId = userId,
                             Adrees = "a", // Corrected typo "Adrees" to "Address"
                             Number = "01",
                             Status = "Đặt hàng",
@@ -210,41 +278,47 @@ namespace BTL_Web.Controllers
                         };
 
                         _DbContext.Orders.Add(newOrder); // Add the new order to the Orders DbSet
-                        _DbContext.SaveChanges(); // Save changes to the database context
-
-                        int totalProductQuantity = _DbContext.Orders
-                                   .Where(o => o.Status == "Đặt hàng") // Kiểm tra SoLuong có giá trị
-                                   .Sum(o => o.SoLuong ?? 0);
-
-                        Response.Cookies.Append("soluong", totalProductQuantity.ToString(), new CookieOptions
-                        {
-                            Expires = DateTime.Now.AddDays(1) // Set the cookie to expire in 1 day
-                        });
-
-                        // Optionally, you can redirect to the appropriate action or view after the order is created
-                        return RedirectToAction("Index", "Cart");
                     }
-                    catch (Exception ex)
+
+                    _DbContext.SaveChanges(); // Save changes to the database context
+
+                    // Update the total product quantity in the cookie
+                    int totalProductQuantity = _DbContext.Orders
+                        .Where(o => o.Status == "Đặt hàng" && o.UserId == userId && o.SoLuong.HasValue)
+                        .Sum(o => o.SoLuong ?? 0);
+
+                    Response.Cookies.Append("soluong", totalProductQuantity.ToString(), new CookieOptions
                     {
-                        TempData["ErrorMessage"] = "Lỗi khi lưu đơn đặt hàng. Vui lòng thử lại sau. " + ex.Message;
-                        // Log the exception for further investigation
-                        // _logger.LogError(ex, "An error occurred while saving the order data.");
-                        Console.WriteLine(ex);
-                        return View();
-                    }
-                }
+                        Expires = DateTime.Now.AddDays(1) // Set the cookie to expire in 1 day
+                    });
 
-                // Handle the case where the user ID parsing fails
-                TempData["ErrorMessage"] = "Lỗi khi lưu đơn đặt hàng. Vui lòng thử lại sau.";
-                return View();
+                    // Optionally, you can redirect to the appropriate action or view after the order is created
+                    return RedirectToAction("Index", "Cart");
+                }
+                catch (Exception ex)
+                {
+                    TempData["ErrorMessage"] = "Lỗi khi lưu đơn đặt hàng. Vui lòng thử lại sau. " + ex.Message;
+                    // Log the exception for further investigation
+                    // _logger.LogError(ex, "An error occurred while saving the order data.");
+                    Console.WriteLine(ex);
+                    return View();
+                }
             }
+
+            // Handle the case where the user ID parsing fails
+            TempData["ErrorMessage"] = "Lỗi khi lưu đơn đặt hàng. Vui lòng thử lại sau.";
+            return View();
         }
+
 
         [HttpDelete]
         public JsonResult DeleteCart(int id)
         {
             try
             {
+
+                var userId = Request.Cookies["id"];
+
                 // Tìm tất cả các hàng hóa trong giỏ hàng có ProductId trùng với id
                 var cartItems = this._DbContext.Orders.Where(row => row.OrderId == id).ToList();
 
@@ -259,14 +333,19 @@ namespace BTL_Web.Controllers
                 }
 
                 // int itemCount = _DbContext.Orders.Count();
-                int totalProductQuantity = _DbContext.Orders
-                                  .Where(o => o.Status == "Đặt hàng") // Kiểm tra SoLuong có giá trị
-                                  .Sum(o => o.SoLuong ?? 0);
-
-                Response.Cookies.Append("soluong", totalProductQuantity.ToString(), new CookieOptions
+                if (int.TryParse(userId, out int intValue))
                 {
-                    Expires = DateTime.Now.AddDays(1) // Set the cookie to expire in 1 day
-                });
+
+                    int totalProductQuantity = this._DbContext.Orders
+                        .Where(o => o.Status == "Đặt hàng" && o.UserId == intValue && o.SoLuong.HasValue)
+                        .Sum(o => o.SoLuong.Value);
+
+                    Response.Cookies.Append("soluong", totalProductQuantity.ToString(), new CookieOptions
+                    {
+                        Expires = DateTime.Now.AddDays(1) // Set the cookie to expire in 1 day
+                    });
+
+                }
 
                 return Json(new { success = id });
             }
@@ -325,6 +404,44 @@ namespace BTL_Web.Controllers
             {
                 // Xử lý ngoại lệ, ghi log hoặc trả về thông báo lỗi.
                 return Json(new { error = "An error occurred: " + ex.Message });
+            }
+        }
+
+
+
+        [HttpPost]
+        public JsonResult DongHang(int orderId)
+        {
+            try
+            {
+                // Kiểm tra nếu danh sách value.orderIds không rỗng
+
+                Console.WriteLine("Processing orderId: " + orderId);
+
+                // Tìm đơn đặt hàng có value.orderIds trùng với id
+                var order = this._DbContext.Orders.FirstOrDefault(row => row.OrderId == orderId);
+
+                Console.WriteLine("Found order: " + order);
+
+                // Kiểm tra xem đơn đặt hàng có tồn tại không
+                if (order != null)
+                {
+                    // Thực hiện cập nhật trạng thái đơn đặt hàng, ví dụ: đặt hàng thành công
+                    order.Status = "Đã đóng hàng";
+
+                    this._DbContext.SaveChanges();
+                }
+
+                // Trả về một JSON object để thể hiện rằng thao tác đã thành công
+                return Json(new { success = true, order = orderId });
+            }
+            catch (Exception ex)
+            {
+                // Xử lý ngoại lệ, ghi log hoặc trả về thông báo lỗi.
+                return Json(new
+                {
+                    error = "An error occurred: " + ex.Message
+                });
             }
         }
 

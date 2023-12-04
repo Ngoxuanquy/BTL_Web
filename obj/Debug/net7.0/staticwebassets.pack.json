@@ -29,8 +29,20 @@
       "PackagePath": "staticwebassets\\Images\\hinh-anh-dep-6_044127357.jpg"
     },
     {
+      "Id": "C:\\Users\\ngoxu\\Documents\\BTL_WebNangCao\\BTL_Web\\wwwroot\\Images\\sanpham15.jpg",
+      "PackagePath": "staticwebassets\\Images\\sanpham15.jpg"
+    },
+    {
       "Id": "C:\\Users\\ngoxu\\Documents\\BTL_WebNangCao\\BTL_Web\\wwwroot\\Images\\sanpham2.jpg",
       "PackagePath": "staticwebassets\\Images\\sanpham2.jpg"
+    },
+    {
+      "Id": "C:\\Users\\ngoxu\\Documents\\BTL_WebNangCao\\BTL_Web\\wwwroot\\Images\\sanpham27.jpg",
+      "PackagePath": "staticwebassets\\Images\\sanpham27.jpg"
+    },
+    {
+      "Id": "C:\\Users\\ngoxu\\Documents\\BTL_WebNangCao\\BTL_Web\\wwwroot\\Images\\sanpham4.jpg",
+      "PackagePath": "staticwebassets\\Images\\sanpham4.jpg"
     },
     {
       "Id": "C:\\Users\\ngoxu\\Documents\\BTL_WebNangCao\\BTL_Web\\wwwroot\\css\\site.css",

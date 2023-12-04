@@ -216,7 +216,8 @@
                     return data.json()
                 })
                 .then((data) => {
-                    console.log({ data });
+                    window.location.reload();
+
 
                     var inputElement = document.getElementById(id);
                     if (inputElement) {
@@ -248,7 +249,8 @@
                 return data.json()
             })
             .then((data) => {
-                console.log({ data });
+                window.location.reload();
+
                 var inputElement = document.getElementById(orderId);
                 if (inputElement) {
                     inputElement.querySelector('input').value = data.product.soLuong;
@@ -341,6 +343,8 @@
                     data: { id: hanghoaId },
                     success: function (result) {
                         if (result.success) {
+                            window.location.reload();
+
                             document.getElementById(hanghoaId).remove()
                             alert("Xoas thanh cong")
                         } else {

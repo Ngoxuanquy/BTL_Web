@@ -43,6 +43,31 @@ namespace BTL_Web.Controllers
             // return RedirectToAction("ProductDetail", "Product");
         }
 
+        [HttpPost("Filter")] // Add an appropriate route here
+        public ActionResult Filter(int id)
+        {
+            var category = id.ToString();
+
+            var filteredProducts = GetFilteredProducts(category);
+
+            return PartialView("_ProductList", filteredProducts);
+        }
+
+        private IActionResult GetFilteredProducts(string category)
+        {
+            if (int.TryParse(category, out int categoryNumber))
+            {
+                var filteredProducts = this._DbContext.Products
+                                                    .Where(p => p.ProductPrice == categoryNumber)
+                                                    .ToList();
+                return View(filteredProducts); // Assuming you want to return the filtered products to a view
+            }
+            else
+            {
+                return View(); // Update this line based on how you want to handle the invalid category case
+            }
+        }
+
 
 
         [HttpPost]
@@ -81,57 +106,51 @@ namespace BTL_Web.Controllers
 
 
         [HttpPost]
-        // [ValidateAntiForgeryToken] // Use anti-forgery token for security
-        public JsonResult DeleteCart(int id)
+        [Route("DeleteCart")]
+        public IActionResult DeleteCart([FromBody] Product id)
         {
-            Console.WriteLine($"Attempting to delete products with ProductId {id}");
-
             try
             {
-                // Find all cart items with the specified ProductId
+
                 using (var transaction = this._DbContext.Database.BeginTransaction())
                 {
                     try
                     {
-                        var cartItems = this._DbContext.Products.Where(p => p.ProductId == id).ToList();
+                        var cartItems = this._DbContext.Products.Where(p => p.ProductId == id.ProductId).ToList();
 
-                        Console.WriteLine($"Found {cartItems.Count} products with ProductId {id}");
-
-                        if (cartItems.Count > 0)
+                        if (cartItems.Any())
                         {
-                            // Remove all found cart items
                             this._DbContext.Products.RemoveRange(cartItems);
-
-                            Console.WriteLine($"Successfully deleted {cartItems.Count} products with ProductId {id}");
-                            // Save changes to the database
                             this._DbContext.SaveChanges();
+                            transaction.Commit();
 
-                            transaction.Commit(); // Commit the transaction if everything is successful
+                            Console.WriteLine(cartItems);
+
 
                             return Json(new { message = "Products successfully deleted." });
                         }
                         else
                         {
-                            Console.WriteLine($"No products found with ProductId {id}");
-                            return Json(new { message = "No products found with the specified ProductId." });
+                            return Json(new { message = "No products found with the specified ProductId.", data = id });
                         }
                     }
                     catch (Exception ex)
                     {
-                        // Handle the exception, you can log it or take appropriate action based on your application's requirements.
+                        // Log the exception
                         Console.WriteLine($"An error occurred while fetching or deleting cart items: {ex.Message}");
-
-                        transaction.Rollback(); // Rollback the transaction in case of an error
-                        return Json(new { message = "Error occurred while processing the request." + ex });
+                        transaction.Rollback();
+                        throw; // Let the exception propagate up
                     }
                 }
             }
             catch (Exception ex)
             {
+                // Log the exception
                 Console.WriteLine($"Error deleting products with ProductId {id}: {ex.Message}");
-                return Json(500, "Internal Server Error"); // Or any other appropriate error response
+                return StatusCode(500, "Internal Server Error");
             }
         }
+
 
 
 

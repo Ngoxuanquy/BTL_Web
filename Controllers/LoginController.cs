@@ -79,6 +79,20 @@ namespace BTL_Web.Controllers
                     return RedirectToAction("Index", "Admin");
                 }
 
+                Console.WriteLine(existingUser.UserId);
+
+                int totalProductQuantity = this._DBbContext.Orders
+                    .Where(o => o.Status == "Đặt hàng" && o.UserId == existingUser.UserId && o.SoLuong.HasValue)
+                    .Sum(o => o.SoLuong.Value);
+
+                Console.WriteLine("totalProductQuantity: " + totalProductQuantity);
+
+                Response.Cookies.Append("soluong", totalProductQuantity.ToString(), new CookieOptions
+                {
+                    Expires = DateTime.Now.AddDays(1) // Set the cookie to expire in 1 day
+                });
+
+
                 return RedirectToAction("Index", "Home");
             }
         }

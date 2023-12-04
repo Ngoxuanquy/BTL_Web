@@ -9,10 +9,7 @@
                     <th scope="col">#</th>
                     <th scope="col">Sản phẩm</th>
                     <th scope="col">Đơn giá</th>
-
                     <th scope="col">Số lượng</th>
-                    <th scope="col"> Trạng thái</th>
-                    <th scope="col">Xóa</th>
                 </tr>
             </thead>
             <tbody>
@@ -40,14 +37,7 @@
                             @* <button id="Cong" class="Cong" data-id="@Order.OrderId"
                     onclick="incrementQuantity(this)">+</button> *@
                         </td>
-                        <td style=" ;">
-                            <div style="margin-top: 30px">
-                                Đang xử lý
-                            </div>
-                        </td>
-                        <td style="padding-top: 40px;">
-                            <button data-id="@Order.OrderId" class="btn-delete">Xóa</button>
-                        </td>
+
                     </tr>
                 }
             </tbody>
@@ -62,35 +52,3 @@
         </div>
     }
 </div>
-
-
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-
-
-    $(document).ready(function () {
-        $(".btn-delete").click(function () {
-            var hanghoaId = $(this).data("id");
-            console.log(hanghoaId)
-            if (confirm("Có chắc chắn muốn xoá không?")) {
-                $.ajax({
-                    url: '/Cart/DeleteCart',
-                    method: 'delete',
-                    data: { id: hanghoaId },
-                    success: function (result) {
-                        if (result.success) {
-                            document.getElementById(hanghoaId).remove()
-                            window.reload();
-
-                            alert("Xoas thanh cong")
-                        } else {
-                            alert("Không thể xóa hàng hoá.");
-                        }
-                    }
-                });
-            }
-        });
-    });
-
-
-</script>

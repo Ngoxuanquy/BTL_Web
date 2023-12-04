@@ -97,6 +97,104 @@ namespace BTL_Web.Controllers
             return View(Users);
         }
 
+
+        public class OrderProductDTO
+        {
+            public int OrderId { get; set; }
+            public string ProductName { get; set; }
+            public string ProductImg { get; set; }
+            public int ProductPrice { get; set; }
+            public string ProductDes { get; set; }
+            public int SoLuong { get; set; }
+            // Add any other properties you need
+        }
+
+        [HttpGet]
+        public IActionResult CustomesOrrder()
+        {
+            var userId = Request.Cookies["id"];
+
+            // Check if userId is null or empty
+            if (string.IsNullOrEmpty(userId))
+            {
+                // Handle the case where userId is empty
+                // For example, you might want to redirect to a login page
+                return RedirectToAction("Login");
+            }
+
+            if (int.TryParse(userId, out int intValue))
+            {
+                var completedOrdersWithProducts = this._DBbContext.Orders
+                    .Where(order => order.Status == "Completed")
+                    .Join(
+                        this._DBbContext.Products,
+                        order => order.ProductId,
+                        product => product.ProductId,
+                        (order, product) => new BTL_Web.Controllers.AdminController.OrderProductDTO
+                        {
+                            OrderId = order.OrderId,
+                            ProductName = product.ProductName,
+                            ProductDes = product.ProductDes,
+                            ProductImg = product.ProductImg,
+                            SoLuong = (int)order.SoLuong,
+                            ProductPrice = (int)product.ProductPrice,
+                            // Add other properties you may need
+                        })
+                    .ToList();
+
+                // Pass the data to the view
+                return View(completedOrdersWithProducts);
+            }
+
+            // Handle the case where userId is not a valid integer
+            // For example, you might want to redirect to an error page
+            return RedirectToAction("Error");
+        }
+
+
+
+        public IActionResult CartDone()
+        {
+            var userId = Request.Cookies["id"];
+            if (userId == "")
+            {
+
+            }
+            if (int.TryParse(userId, out int intValue))
+            {
+                var ordersWithProducts = this._DBbContext.Orders
+                    .Where(p => p.Status == "Đã đóng hàng")
+                    .Join(
+                        this._DBbContext.Products,
+                        order => order.ProductId,
+                        product => product.ProductId,
+                        (order, product) => new BTL_Web.Controllers.AdminController.OrderProductDTO
+                        {
+                            OrderId = order.OrderId,
+                            ProductName = product.ProductName,
+                            ProductDes = product.ProductDes,
+                            ProductImg = product.ProductImg,
+                            SoLuong = (int)order.SoLuong,
+                            ProductPrice = (int)product.ProductPrice,
+                            // Other properties you may need
+                        })
+                    .ToList();
+
+
+
+                return View(ordersWithProducts);
+            }
+            else
+            {
+                // Handle the case where conversion fails
+                // For example, you can return an error view or handle it as per your application's requirements
+                return RedirectToAction("", "Login");
+                return BadRequest("Invalid user ID.");
+
+            }
+        }
+
+
         public IActionResult Privacy()
         {
             return View();

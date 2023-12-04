@@ -1,0 +1,77 @@
+@model List<BTL_Web.Controllers.AdminController.OrderProductDTO>
+
+@{
+    Layout = "_LayoutAdmin"; // Sử dụng layout mới
+}
+
+<div style="margin-top: 50px; margin-bottom: 140px; display: flex; flex-direction: column; align-items: center;">
+    @if (Model.Count > 0)
+    {
+        <table class="table" style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Product</th>
+                    <th scope="col">Unit Price</th>
+                    <th scope="col">Quantity</th>
+                    <th scope="col">#</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var order in Model)
+                {
+                    <tr id="@order.OrderId" style="border-bottom: 1px solid #ddd;">
+                        <td style="text-align: center; padding-top: 40px;">@order.OrderId</td>
+                        <td>
+                            <div class="product-info">
+                                <img src="@order.ProductImg" class="product-image" style="width: 150px; height: 150px" />
+                                <p>@order.ProductName</p>
+                            </div>
+                        </td>
+                        <td class="price-column">
+                            <p>
+                                Unit Price: @string.Format("{0:C}", order.ProductPrice)
+                            </p>
+                        </td>
+                        <td style="padding-top: 40px; ">
+                            <input style="width: 40px; text-align: center;" value="@order.SoLuong" id="@order.OrderId" />
+                        </td>
+                        <td style="padding-top: 40px;">
+                            <button data-id="@order.OrderId" onclick="handelDongHang('@order.OrderId')"
+                                class="btn-delete">Đóng</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <div style="font-size: 20px; color: red;">
+            No orders yet.
+        </div>
+    }
+</div>
+
+<script>
+    const handelDongHang = (orderId) => {
+        fetch("/Cart/DongHang", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+            },
+            body: "orderId=" + encodeURIComponent(orderId)
+        })
+            .then((data) => {
+                return data.json();
+            })
+            .then((data) => {
+                // Do something with the response data
+                console.log("Abcncnc")
+                console.log({ data });
+            })
+            .catch(err => {
+                console.log(err);
+            });
+    }
+</script>
