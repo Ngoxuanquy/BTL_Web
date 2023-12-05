@@ -6,7 +6,6 @@
         <table class="table" style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
             <thead>
                 <tr>
-                    <th scope="col">#</th>
                     <th scope="col">Sản phẩm</th>
                     <th scope="col">Đơn giá</th>
 
@@ -19,7 +18,6 @@
                 @foreach (var Order in Model)
                 {
                     <tr id="@Order.OrderId" style="border-bottom: 1px solid #ddd;">
-                        <td style="text-align: center; padding-top: 40px;">@Order.OrderId</td>
                         <td>
                             <div style="display: flex; align-items: center;">
                                 <img src="@Order.ProductImg" style="width: 100px; height: 100px; margin-right: 10px;" />
@@ -46,7 +44,10 @@
                             </div>
                         </td>
                         <td style="padding-top: 40px;">
-                            <button data-id="@Order.OrderId" class="btn-delete">Xóa</button>
+                            @* <button data-id="@Order.OrderId" class="btn-delete">Xóa</button> *@
+                            <button>
+                                Xóa
+                            </button>
                         </td>
                     </tr>
                 }

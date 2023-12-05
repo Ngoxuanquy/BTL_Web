@@ -19,6 +19,8 @@ public partial class BtlWebNcContext : DbContext
 
     public virtual DbSet<Product> Products { get; set; }
 
+    public virtual DbSet<Thi> This { get; set; }
+
     public virtual DbSet<Transition> Transitions { get; set; }
 
     public virtual DbSet<User> Users { get; set; }
@@ -61,6 +63,19 @@ public partial class BtlWebNcContext : DbContext
             entity.Property(e => e.ProductName)
                 .HasMaxLength(254)
                 .IsFixedLength();
+        });
+
+        modelBuilder.Entity<Thi>(entity =>
+        {
+            entity.HasKey(e => e.MaTs);
+
+            entity.ToTable("Thi");
+
+            entity.Property(e => e.MaTs).HasColumnName("MaTS");
+            entity.Property(e => e.TenTs)
+                .HasMaxLength(100)
+                .IsFixedLength()
+                .HasColumnName("TenTS");
         });
 
         modelBuilder.Entity<Transition>(entity =>

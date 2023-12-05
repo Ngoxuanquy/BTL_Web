@@ -43,30 +43,18 @@ namespace BTL_Web.Controllers
             // return RedirectToAction("ProductDetail", "Product");
         }
 
-        [HttpPost("Filter")] // Add an appropriate route here
-        public ActionResult Filter(int id)
+        [HttpPost] // Add an appropriate route here
+        [Route("Filter")]
+        public JsonResult Filter([FromBody] Product id)
         {
-            var category = id.ToString();
 
-            var filteredProducts = GetFilteredProducts(category);
-
-            return PartialView("_ProductList", filteredProducts);
+            var filteredProducts = this._DbContext.Products
+                                                       .Where(p => p.ProductPrice > id.ProductPrice)
+                                                       .ToList();
+            return Json(new { succ = filteredProducts });
         }
 
-        private IActionResult GetFilteredProducts(string category)
-        {
-            if (int.TryParse(category, out int categoryNumber))
-            {
-                var filteredProducts = this._DbContext.Products
-                                                    .Where(p => p.ProductPrice == categoryNumber)
-                                                    .ToList();
-                return View(filteredProducts); // Assuming you want to return the filtered products to a view
-            }
-            else
-            {
-                return View(); // Update this line based on how you want to handle the invalid category case
-            }
-        }
+
 
 
 

@@ -46,22 +46,27 @@
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <script>
     function filterProducts() {
-        var category = $("#category").val();
-        var priceRange = $("#priceRange").val();
 
-        // Gửi yêu cầu lọc đến server (có thể sử dụng AJAX)
-        $.ajax({
-            type: "Post",
-            url: "/Products/Filter", // Thay đổi đường dẫn tùy thuộc vào cấu trúc ứng dụng của bạn
-            data: { category: category, priceRange: priceRange },
-            success: function (data) {
-                // Cập nhật danh sách sản phẩm với dữ liệu mới từ server
-                $(".product").remove(); // Xóa các sản phẩm hiện tại
-                $("#filter").after(data); // Thêm sản phẩm mới từ server
+        fetch("/Product/Filter", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+
             },
-            error: function () {
-                alert("Đã xảy ra lỗi khi lọc sản phẩm.");
-            }
-        });
+            body: JSON.stringify({
+                ProductPrice: 400
+            })
+
+        })
+            .then((data) => {
+                return data.json();
+            })
+            .then((data) => {
+
+                console.log({ data });
+            })
+            .catch(err => {
+                console.log(err);
+            });
     }
 </script>

@@ -142,7 +142,8 @@
     <tbody>
         @foreach (var product in Model)
         {
-            <tr id="detaiProduct">
+            //~/Images/
+            <tr id="@product.ProductId">
                 <td
                     onclick="handelDetai('@product.ProductId' , '@product.ProductName', '@product.ProductImg','@product.ProductPrice', '@product.ProductDes ')">
                     <img src="@product.ProductImg" alt="@product.ProductName"
@@ -340,8 +341,9 @@
             })
         })
             .then((data) => {
-                console.log('abcjs')
-                console.log(intNumber)
+                var element = document.getElementById(intNumber);
+                element.remove();
+
                 return data.json()
             })
             .then((data) => {

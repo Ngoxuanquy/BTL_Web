@@ -1,0 +1,137 @@
+@model List<Thi>
+
+<div>
+    @foreach (var product in Model)
+    {
+        <div>
+            @product.TenTs
+            @product.KetQua
+            <button onclick="Xoa('@product.MaTs')">
+                Xóa
+            </button>
+            <button onclick="Sua('@product.MaTs', '@product.TenTs', '@product.KetQua' )">
+                Sửa
+            </button>
+        </div>
+    }
+
+    <div>
+        <div id="idTen">
+
+        </div>
+        <div>
+            Tên thí sinh
+        </div>
+        <input id="name" />
+
+        <div>
+            Kết quả
+        </div>
+        <input id="ketqua" />
+
+
+    </div>
+
+    <button onclick="handelSubmit()">
+        Gửi
+    </button>
+    <button onclick="Updatethi()">
+        update
+    </button>
+</div>
+
+<script>
+
+    const Sua = (id, name, ketqua) => {
+
+        document.getElementById('name').value = name
+        document.getElementById('ketqua').value = ketqua
+        var element = document.getElementById("idTen").innerText = id
+
+
+        console.log({ element })
+
+    }
+
+    const Updatethi = () => {
+
+        const idTen = document.getElementById('idTen').innerText;
+
+        const name = document.getElementById('name').value;
+        const ketqua = document.getElementById('ketqua').value;
+
+
+        fetch("/Thi/UpdateThi", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                MaTs: idTen,
+                TenTs: name,
+                KetQua: ketqua
+            })
+
+        })
+            .then((data) => {
+                return data.json();
+            })
+            .then((data) => {
+                console.log({ data });
+            })
+            .catch(err => {
+                console.log(err);
+            });
+    }
+
+    const Xoa = (id) => {
+        fetch("/Thi/DeleteThi", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                MaTs: id,
+            })
+
+        })
+            .then((data) => {
+                return data.json();
+            })
+            .then((data) => {
+                console.log({ data });
+            })
+            .catch(err => {
+                console.log(err);
+            });
+    }
+
+    const handelSubmit = () => {
+
+        const name = document.getElementById('name').value;
+        const ketqua = document.getElementById('ketqua').value;
+
+        fetch("/Thi/CreateThi", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                TenTs: name,
+                KetQua: ketqua
+            })
+
+        })
+            .then((data) => {
+                return data.json();
+            })
+            .then((data) => {
+                console.log({ data });
+            })
+            .catch(err => {
+                console.log(err);
+            });
+
+    }
+
+</script>

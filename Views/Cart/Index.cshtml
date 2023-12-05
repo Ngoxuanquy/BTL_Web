@@ -124,7 +124,9 @@
         <table class="table">
             <thead>
                 <tr>
-                    <th scope="col">#</th>
+                    <th scope="col">
+                        <input type="checkbox" id="checkboxAll" />
+                    </th>
                     <th scope="col">Sản phẩm</th>
                     <th scope="col">Đơn giá</th>
                     <th scope="col">Số lượng</th>
@@ -135,7 +137,10 @@
                 @foreach (var Order in Model)
                 {
                     <tr id="@Order.OrderId">
-                        <td>@Order.OrderId</td>
+                        <td>
+                            <input type="checkbox" data-id="@Order.OrderId" />
+
+                        </td>
                         <td>
                             <div class="product-info">
                                 <img src="@Order.ProductImg" />
@@ -150,8 +155,8 @@
                         <td>
                             <div class="quantity-control">
                                 <button class="Tru" data-id="@Order.OrderId" onclick="decrementQuantity(this)">-</button>
-                                <input type="text" value="@Order.SoLuong" id="@Order.OrderId"
-                                    style="width: 50px; height: 30px" />
+                                <input type="text" value="@Order.SoLuong" id="@Order.OrderId" class="@Order.OrderId"
+                                    style="width: 50px; height: 30px" readonly />
                                 <button class="Cong" data-id="@Order.OrderId" onclick="incrementQuantity(this)">+</button>
                             </div>
                         </td>
@@ -162,7 +167,9 @@
                 }
             </tbody>
         </table>
-
+        <div id="totalPrice">
+            Tổng tiền
+        </div>
         <div id="customer-info">
             <div>
                 <p>Họ và tên:</p>
@@ -197,12 +204,101 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
 
+    function updateTotalPrice() {
+        var total = 0;
+
+        // Iterate through each row in the table
+        $("tbody tr").each(function () {
+            var quantity = parseInt($(this).find(".quantity-control input").val());
+            var price = parseFloat($(this).find(".price-info p").text().replace("Đơn giá: ", "").replace(",", ""));
+
+            total += quantity * price;
+        });
+
+        // Display the total in the #totalPrice element
+        $("#totalPrice").text("Tổng tiền: " + total.toLocaleString() + " VNĐ");
+    }
+
+    var array = []
+
+    document.addEventListener('DOMContentLoaded', function () {
+        // Function to handle checkbox click
+        function handleCheckboxClick(checkbox) {
+            var orderId = checkbox.getAttribute("data-id");
+            var isChecked = checkbox.checked;
+            var checkItem = $("input[type='checkbox']").attr("data-id");
+
+
+            if (isChecked && orderId === null) {
+                array = []; // Khai báo mảng ở đây để tránh lỗi không mong muốn
+                $(".btn-delete").each(function () {
+                    var btnDataId = $(this).data("id");
+                    array.push(btnDataId);
+
+
+
+                    checkboxes.forEach(function (checkbox) {
+                        checkbox.checked = true;
+                        updateTotalPrice()
+                    });
+                });
+
+            }
+            else if (isChecked == false && orderId == null) {
+                array = []
+
+                checkboxes.forEach(function (checkbox) {
+                    checkbox.checked = false;
+                });
+
+            }
+            else {
+                // Add your logic here to handle the checkbox state
+                if (isChecked) {
+                    array.push(orderId)
+                    updateTotalPrice()
+
+                    console.log("Checkbox with ID " + orderId + " is checked");
+
+                } else {
+
+                    array = array.filter(function (value) {
+                        return value !== orderId;
+                    });
+
+
+                    // Checkbox is unchecked, perform actions for unchecked state
+                    console.log("Checkbox with ID " + orderId + " is unchecked");
+                    // Add your code to process the unchecked state as needed
+                }
+            }
+        }
+
+        // Get all checkboxes
+        var checkboxes = document.querySelectorAll('input[type="checkbox"]');
+
+
+        // Add event listener for each checkbox
+        checkboxes.forEach(function (checkbox) {
+            checkbox.addEventListener('change', function () {
+                handleCheckboxClick(this);
+            });
+        });
+
+        // ... Your existing code ...
+
+    });
+
+
+
     function decrementQuantity(button) {
         var id = button.getAttribute("data-id");
         console.log(id)
-        var inputElement = document.getElementById(id);
-        var input_soluong = inputElement.querySelector('input').value
-        var soluongAsNumber = parseInt(input_soluong, 10);
+        var elementsWithClass = document.getElementsByClassName(id);
+
+        var inputValue = elementsWithClass[0].value;
+        var soluongAsNumber = parseInt(inputValue, 10);
+
 
         if (soluongAsNumber > 1) {
             fetch("/Cart/SoLuongTru", {
@@ -273,21 +369,22 @@
         var address = document.getElementById("address").value;
 
         if (fullName.trim() !== "" && phoneNumber.trim() !== "" && address.trim() !== "") {
-
-
             var orderIds = [];
-
-
             $(".btn-delete").each(function () {
                 orderIds.push($(this).data("id"));
             });
+
+            console.log({ array })
 
             var value = {
                 fullName: fullName,
                 phoneNumber,
                 address,
-                orderIds
+                orderIds: array
             }
+
+            console.log(value)
+
 
             // Now orderIds array contains all OrderIds
             fetch("/Cart/DatHang", {
@@ -355,6 +452,7 @@
             }
         });
     });
+
 
 
 </script>

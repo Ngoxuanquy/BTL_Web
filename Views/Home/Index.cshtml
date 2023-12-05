@@ -60,7 +60,7 @@
             @foreach (var product in Model)
             {
                 <div class="product-card" style="margin-top: 20px; padding: 10px; color: black; border: 0.4px solid gray">
-                    <a href="@Url.Action("ProductDetail", new { id = product.ProductId })"
+                    <a href="@Url.Action("ProductDetail", "Product", new { id = product.ProductId })"
                         style="color: black; text-decoration: none">
                         <img src="@product.ProductImg" alt="@product.ProductName" style="width:300px; height: 300px" />
                         <div style="display: flex; justify-content: space-between">
@@ -175,13 +175,15 @@
                             Reviews
                         </div>
                         <div>
-                            "Add testimonial quotes from actual people who use your products. Their feedback can
+                            "Add testimonial quotes from actual people who use your products. Their feedback
+                            can
                             build
                             trust and help your visitors make up their mind."
                             Mike Smith, companyname.com
                         </div>
                         <div>
-                            "Add testimonial quotes from actual people who use your products. Their feedback can
+                            "Add testimonial quotes from actual people who use your products. Their feedback
+                            can
                             build
                             trust and help your visitors make up their mind."
                             Mike Smith, companyname.com

@@ -398,7 +398,7 @@ namespace BTL_Web.Controllers
                 }
 
                 // Trả về một JSON object để thể hiện rằng thao tác đã thành công
-                return Json(new { success = true, order = value.OrderIds });
+                return Json(new { success = true, order = value });
             }
             catch (Exception ex)
             {
