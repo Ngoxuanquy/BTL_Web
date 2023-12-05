@@ -1,0 +1,128 @@
+@model List<Product>
+
+<div>
+    Tìm kiếm
+    <input id="search" />
+
+    <button onclick="Tim()" style=";">
+        Tìm
+    </button>
+    <div id="sanpham" style="display: flex; flex-direction: row">
+
+    </div>
+</div>
+
+<script>
+
+    var array = []
+
+    const Tim = () => {
+        var searchInput = document.getElementById("search").value;
+        console.log({ searchInput })
+        fetch("/TimKiem/Search", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+            },
+            body: "searchString=" + searchInput
+        })
+            .then((data) => data.json())
+            .then((data) => {
+                console.log({ data });
+                var searchResultsContainer = document.getElementById("sanpham");
+
+                // Remove previous results
+                while (searchResultsContainer.firstChild) {
+                    searchResultsContainer.removeChild(searchResultsContainer.firstChild);
+                }
+
+                // Display the new results
+                data.data.forEach(result => {
+                    var resultItem = document.createElement("div");
+                    resultItem.textContent = result.productName;  // Update this line based on your actual result structure
+                    searchResultsContainer.appendChild(resultItem);
+
+                    var imgtext = document.createElement("img");
+                    imgtext.id = result.productId;
+                    imgtext.style.width = '100px'
+                    imgtext.src = result.productImg;  // Update this line based on your actual result structure
+                    searchResultsContainer.appendChild(imgtext);
+
+                    imgtext.addEventListener('click', () => {
+                        console.log(result.productId);
+                        // Construct the URL using JavaScript
+                        var url = '/Product?id=' + result.productId;
+
+                        // Redirect to the product detail page
+                        window.location.href = url;
+                    });
+                });
+            })
+            .catch(err => {
+                console.log(err);
+            });
+    }
+
+    @* const Tim = () => {
+        console.log("abc")
+        searchInput.addEventListener("input", function () {
+        var searchValue = searchInput.value;
+
+        console.log(searchValue);
+
+        if (searchValue != "" && searchValue != null) { // Change || to && for correct condition
+
+        fetch("/TimKiem/Search", {
+        method: "POST",
+        headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: "searchString=" + searchValue
+        })
+        .then((data) => data.json())
+        .then((data) => {
+        console.log({ data });
+        var searchResultsContainer = document.getElementById("sanpham");
+
+        // Remove previous results
+        while (searchResultsContainer.firstChild) {
+        searchResultsContainer.removeChild(searchResultsContainer.firstChild);
+        }
+
+        // Display the new results
+        data.data.forEach(result => {
+        var resultItem = document.createElement("div");
+        resultItem.textContent = result.productName;  // Update this line based on your actual result structure
+        searchResultsContainer.appendChild(resultItem);
+
+        var imgtext = document.createElement("img");
+        imgtext.id = result.productId;
+        imgtext.style.width = '100px'
+        imgtext.src = result.productImg;  // Update this line based on your actual result structure
+        searchResultsContainer.appendChild(imgtext);
+
+        imgtext.addEventListener('click', () => {
+        console.log(result.productId);
+        // Construct the URL using JavaScript
+        var url = '/Product?id=' + result.productId;
+
+        // Redirect to the product detail page
+        window.location.href = url;
+        });
+        });
+        })
+        .catch(err => {
+        console.log(err);
+        });
+        } else {
+        var searchResultsContainer = document.getElementById("sanpham");
+
+        while (searchResultsContainer.firstChild) {
+        searchResultsContainer.removeChild(searchResultsContainer.firstChild);
+        }
+        }
+
+        console.log(array); // Note: You reference 'array' here, make sure it's declared and defined elsewhere in your code.
+        });
+        } *@
+</script>

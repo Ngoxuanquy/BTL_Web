@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "MHctV7pUKlottrN8egiEbumc4CmYArwX5cM1P7j6h/k=",
+  "Hash": "tbijmCZIS5VBtlTI1gDiOQNx5BNFMkeYQREUbvfIh3E=",
   "Source": "BTL_Web",
   "BasePath": "_content/BTL_Web",
   "Mode": "Default",
@@ -187,6 +187,23 @@
       "OriginalItemSpec": "wwwroot\\Images\\hinh-anh-dep-6_044127357.jpg"
     },
     {
+      "Identity": "C:\\Users\\ngoxu\\Documents\\BTL_WebNangCao\\BTL_Web\\wwwroot\\Images\\sanpham10.jpg",
+      "SourceId": "BTL_Web",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\ngoxu\\Documents\\BTL_WebNangCao\\BTL_Web\\wwwroot\\",
+      "BasePath": "_content/BTL_Web",
+      "RelativePath": "Images/sanpham10.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\Images\\sanpham10.jpg"
+    },
+    {
       "Identity": "C:\\Users\\ngoxu\\Documents\\BTL_WebNangCao\\BTL_Web\\wwwroot\\Images\\sanpham15.jpg",
       "SourceId": "BTL_Web",
       "SourceType": "Discovered",
@@ -219,6 +236,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\Images\\sanpham2.jpg"
+    },
+    {
+      "Identity": "C:\\Users\\ngoxu\\Documents\\BTL_WebNangCao\\BTL_Web\\wwwroot\\Images\\sanpham25.jpg",
+      "SourceId": "BTL_Web",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\ngoxu\\Documents\\BTL_WebNangCao\\BTL_Web\\wwwroot\\",
+      "BasePath": "_content/BTL_Web",
+      "RelativePath": "Images/sanpham25.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\Images\\sanpham25.jpg"
     },
     {
       "Identity": "C:\\Users\\ngoxu\\Documents\\BTL_WebNangCao\\BTL_Web\\wwwroot\\Images\\sanpham27.jpg",

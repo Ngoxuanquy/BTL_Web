@@ -90,6 +90,44 @@ namespace BTL_Web.Controllers
             }
         }
 
+        [HttpPost]
+        public JsonResult UpdateStatus(int orderId)
+        {
+            try
+            {
+                // Kiểm tra nếu danh sách value.orderIds không rỗng
+
+                Console.WriteLine("Processing orderId: " + orderId);
+
+                // Tìm đơn đặt hàng có value.orderIds trùng với id
+                var order = this._DbContext.Products.FirstOrDefault(row => row.ProductId == orderId);
+
+                Console.WriteLine("Found order: " + order);
+
+                // Kiểm tra xem đơn đặt hàng có tồn tại không
+                if (order != null)
+                {
+                    // Thực hiện cập nhật trạng thái đơn đặt hàng, ví dụ: đặt hàng thành công
+                    // order.Status = "Đã đóng hàng";
+
+                    this._DbContext.SaveChanges();
+                }
+
+                // Trả về một JSON object để thể hiện rằng thao tác đã thành công
+                return Json(new { success = true, order = orderId });
+            }
+            catch (Exception ex)
+            {
+                // Xử lý ngoại lệ, ghi log hoặc trả về thông báo lỗi.
+                return Json(new
+                {
+                    error = "An error occurred: " + ex.Message
+                });
+            }
+        }
+
+
+
 
 
 

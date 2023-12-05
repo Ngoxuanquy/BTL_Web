@@ -59,17 +59,17 @@
         <div style="display: flex; flex-wrap: wrap; justify-content: space-between; width: 100%">
             @foreach (var product in Model)
             {
-                <div class="product-card" style="margin-top: 20px; padding: 10px; color: black; border: 0.4px solid gray">
-                    <a href="@Url.Action("ProductDetail", "Product", new { id = product.ProductId })"
-                        style="color: black; text-decoration: none">
-                        <img src="@product.ProductImg" alt="@product.ProductName" style="width:300px; height: 300px" />
-                        <div style="display: flex; justify-content: space-between">
-                            <h3 style="margin-top: 5px;">@product.ProductName</h3>
-                            <p style="font-size: 16px; padding: 10px">Đơn giá: @product.ProductPrice</p>
-                        </div>
-                        <p>Mô tả: @product.ProductDes</p>
-                    </a>
-                </div>
+                    <div class="product-card" style="margin-top: 20px; padding: 10px; color: black; border: 0.4px solid gray">
+                        <a href="@Url.Action("ProductDetail", "Product", new { id = product.ProductId })"
+                            style="color: black; text-decoration: none">
+                            <img src="@product.ProductImg" alt="@product.ProductName" style="width:300px; height: 300px" />
+                            <div style="display: flex; justify-content: space-between">
+                                <h3 style="margin-top: 5px;">@product.ProductName</h3>
+                                <p style="font-size: 16px; padding: 10px">Đơn giá: @product.ProductPrice</p>
+                            </div>
+                            <p>Mô tả: @product.ProductDes</p>
+                        </a>
+                    </div>
             }
         </div>
 
@@ -203,7 +203,7 @@
     var array = []
 
 
-    searchInput.addEventListener("input", function () {
+    @* searchInput.addEventListener("input", function () {
         var searchValue = searchInput.value;
         console.log(searchValue == "");
 
@@ -260,7 +260,7 @@
         }
 
         console.log(array); // Note: You reference 'array' here, make sure it's declared and defined elsewhere in your code.
-    });
+    }); *@
 
 
 </script>
