@@ -22,7 +22,12 @@
             <!-- Thêm các khoảng giá khác nếu cần -->
         </select>
 
-        <button onclick="filterProducts()">Lọc</button>
+        @* <button onclick="filterProducts()">Lọc</button> *@
+        <button>Lọc</button>
+
+        <div id=" sanpham">
+
+        </div>
     </div>
 </div>
 <div style="display: flex; flex-wrap: wrap; justify-content: space-between; width: 100%">
@@ -64,6 +69,35 @@
             .then((data) => {
 
                 console.log({ data });
+                var searchResultsContainer = document.getElementById("sanpham");
+
+                // Remove previous results
+                while (searchResultsContainer.firstChild) {
+                    searchResultsContainer.removeChild(searchResultsContainer.firstChild);
+                }
+
+                // Display the new results
+                data.succ.forEach(result => {
+                    var resultItem = document.createElement("div");
+                    resultItem.textContent = result.productName;  // Update this line based on your actual result structure
+                    searchResultsContainer.appendChild(resultItem);
+
+                    var imgtext = document.createElement("img");
+                    imgtext.id = result.productId;
+                    imgtext.style.width = '100px'
+                    imgtext.src = result.productImg;  // Update this line based on your actual result structure
+                    searchResultsContainer.appendChild(imgtext);
+
+                    imgtext.addEventListener('click', () => {
+                        console.log(result.productId);
+                        // Construct the URL using JavaScript
+                        var url = '/Product?id=' + result.productId;
+
+                        // Redirect to the product detail page
+                        window.location.href = url;
+                    });
+                });
+
             })
             .catch(err => {
                 console.log(err);
